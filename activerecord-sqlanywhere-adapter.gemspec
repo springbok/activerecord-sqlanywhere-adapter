@@ -1,3 +1,4 @@
+pkg_version = "1.0.0"
 Gem::Specification.new do |gem|
   gem.authors = ["Eric Farrar"]
   gem.email = 'eric.farrar@ianywhere.com'
