@@ -8,6 +8,7 @@ module Arel
     is_distinct = using_distinct?(o)
     
     o.limit = 1000000 if (o.offset && !o.limit)
+    o.limit = o.limit.expr if(o.limit)
 
     if (o.limit || o.offset) && is_distinct
       o.cores.map { |cores| cores.projections.first.gsub!('DISTINCT', '') }
@@ -17,7 +18,7 @@ module Arel
     [
       "SELECT",
       ("DISTINCT" if (o.limit || o.offset) && is_distinct),
-      ("TOP #{o.limit.expr}" if o.limit),
+      ("TOP #{o.limit}" if o.limit),
       (visit(o.offset) if o.offset),
       o.cores.map { |x| visit_Arel_Nodes_SelectCore x }.join,
       ("ORDER BY #{o.orders.map { |x| visit x }.join(', ')}" unless o.orders.empty?),
