@@ -243,11 +243,11 @@ module ActiveRecord
       end  
 
       # The database execution function
-      def execute(sql, name = nil) #:nodoc:
+      def execute(sql, name = nil, binds = []) #:nodoc:
         if name == :skip_logging
           query(sql)
         else
-          log(sql, name) { query(sql) }
+          log(sql, name, binds) { query(sql) }
         end        
       end
 
@@ -434,8 +434,8 @@ module ActiveRecord
       end
          
       protected
-        def select(sql, name = nil) #:nodoc:
-          return execute(sql, name)
+        def select(sql, name = nil, binds = []) #:nodoc:
+          return execute(sql, name, binds)
         end
 
         # ActiveRecord uses the OFFSET/LIMIT keywords at the end of query to limit the number of items in the result set.
