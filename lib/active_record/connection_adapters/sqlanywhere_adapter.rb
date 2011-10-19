@@ -96,7 +96,7 @@ module ActiveRecord
         def extract_limit(sql_type)
           case sql_type
             when /^tinyint/i
-	      1
+              1
             when /^smallint/i 
               2
             when /^integer/i  
@@ -150,7 +150,7 @@ module ActiveRecord
 
       def disconnect!
         result = SA.instance.api.sqlany_disconnect( @connection )
-	super
+        super
       end
 
       def reconnect!
@@ -244,9 +244,9 @@ module ActiveRecord
 
       # The database execution function
       def execute(sql, name = nil) #:nodoc:
-	if name == :skip_logging
-	  query(sql)
-	else
+        if name == :skip_logging
+          query(sql)
+        else
           log(sql, name) { query(sql) }
         end        
       end
@@ -255,7 +255,7 @@ module ActiveRecord
         case exception.errno
           when -143
             if exception.sql !~ /^SELECT/i then
-	      raise ActiveRecord::ActiveRecordError.new(message)
+              raise ActiveRecord::ActiveRecordError.new(message)
             else
               super
             end
@@ -353,7 +353,7 @@ module ActiveRecord
                column_type_sql
           elsif type == :string and !limit.nil?
              "varchar (#{limit} character)"
-	  else 
+          else 
             super(type, limit, precision, scale)
           end
         else
