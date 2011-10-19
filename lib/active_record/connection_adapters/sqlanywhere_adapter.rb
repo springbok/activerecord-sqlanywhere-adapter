@@ -432,9 +432,10 @@ module ActiveRecord
         end
         execute "ALTER TABLE #{quote_table_name(table_name)} DROP #{quote_column_name(column_name)}"
       end
-         
+
       protected
         def select(sql, name = nil, binds = []) #:nodoc:
+          sql = sql.gsub("?"){ quote(binds.shift[1])}
           return execute(sql, name, binds)
         end
 
