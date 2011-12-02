@@ -580,7 +580,12 @@ SQL
               max_cols = SA.instance.api.sqlany_num_cols(rs)
               result = Hash.new()
               max_cols.times do |cols|
-                result[SA.instance.api.sqlany_get_column_info(rs, cols)[2]] = SA.instance.api.sqlany_get_column(rs, cols)[1]
+		col_content=SA.instance.api.sqlany_get_column(rs, cols)[1]
+		if !col_content.nil? && col_content.is_a?(String)
+		  puts ":encoding missing in database.yml" if ActiveRecord::Base.configurations[Rails.env]['encoding'].nil?
+		  col_content = col_content.force_encoding(ActiveRecord::Base.configurations[Rails.env]['encoding'])
+		end
+                result[SA.instance.api.sqlany_get_column_info(rs, cols)[2]] = col_content
               end
               record << result
             end
