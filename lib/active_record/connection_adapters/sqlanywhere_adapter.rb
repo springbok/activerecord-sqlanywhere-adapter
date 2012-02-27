@@ -78,6 +78,7 @@ module ActiveRecord
         super(message)
         @errno = errno
         @sql = sql
+		@visitor = Arel::Visitors::SQLAnywhere.new
       end
     end
   
