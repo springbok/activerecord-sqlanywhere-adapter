@@ -119,6 +119,10 @@ module ActiveRecord
         def self.binary_to_string(value)
           value.gsub(/\\x[0-9]{2}/) { |byte| byte[2..3].hex }
         end
+		
+		# Should override the time column values.
+		# Sybase doesn't like the time zones.
+		
     end
 
     class SQLAnywhereAdapter < AbstractAdapter
@@ -560,6 +564,45 @@ SQL
           # The liveness variable is used a low-cost "no-op" to test liveness
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
+		
+		def exec_query(sql, name = 'SQL', binds = [])
+		  puts "running exec query"
+		  puts sql.inspect
+		  puts name.inspect
+		  puts binds.inspect
+		  log(sql, name, binds) do
+		    if binds.empty?
+			  SA.instance.api.sqlany_execute_direct(@connection, sql)
+			else
+			  stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+			  
+			  for i in 0...binds.length
+			    bind_type = binds[i][0].type
+			    bind_value = binds[i][1]
+				puts bind_type, bind_value.class, bind_value
+				result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
+				puts "1 success, 0 failure describe bind param #{result}"
+				bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
+				if bind_type == :datetime
+				  bind_param.set_value(bind_value.to_datetime.to_s :db)
+				  puts "date: #{bind_value.to_s :db}"
+				  puts "date: #{bind_value.strftime "%Y-%m-%d %H:%M:%S"}"
+				else
+		          bind_param.set_value(bind_value)
+				end
+				puts "1 success, 0 failure #{SA.instance.api.sqlany_bind_param(stmt, i, bind_param)}"
+				
+			  end
+			  
+			  puts "1 success, 0 failure execute #{SA.instance.api.sqlany_execute(stmt)}"
+			  puts SA.instance.api.sqlany_error(@connection)
+			  SA.instance.api.sqlany_free_stmt(stmt)
+			  
+			  # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
+			  puts "1 success, 0 failure commit #{SA.instance.api.sqlany_commit(@connection)}"
+			end
+		  end
+		end
 
         def query(sql)
           return if sql.nil?
