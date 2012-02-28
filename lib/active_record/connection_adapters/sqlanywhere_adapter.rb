@@ -248,11 +248,11 @@ module ActiveRecord
       end  
 
       # The database execution function
-      def execute(sql, name = nil, binds = []) #:nodoc:
+      def execute(sql, name = nil) #:nodoc:
         if name == :skip_logging
-          query(sql)
+		  SA.instance.api.sqlany_execute_immediate(@connection, sql)
         else
-          log(sql, name, binds) { query(sql) }
+          log(sql, name) { SA.instance.api.sqlany_execute_immediate(@connection, sql) }
         end        
       end
 
@@ -366,9 +366,9 @@ module ActiveRecord
         end
       end
 
-      # Do not return SYS-owned or DBO-owned tables
+      # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
-          sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3)"
+          sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
           select(sql, name).map { |row| row["table_name"] }
       end
 
@@ -437,11 +437,17 @@ module ActiveRecord
         end
         execute "ALTER TABLE #{quote_table_name(table_name)} DROP #{quote_column_name(column_name)}"
       end
+	  
+	  				
+	def purge_database
+	  tables.each do |table_name|
+	    drop_table(table_name)
+	  end
+	end
 
       protected
         def select(sql, name = nil, binds = []) #:nodoc:
-          sql = sql.gsub("?"){ quote(binds.shift[1])}
-          return execute(sql, name, binds)
+          exec_query(sql, name, binds)
         end
 
         # ActiveRecord uses the OFFSET/LIMIT keywords at the end of query to limit the number of items in the result set.
@@ -566,41 +572,44 @@ SQL
         end
 		
 		def exec_query(sql, name = 'SQL', binds = [])
-		  puts "running exec query"
-		  puts sql.inspect
-		  puts name.inspect
-		  puts binds.inspect
 		  log(sql, name, binds) do
-		    if binds.empty?
-			  SA.instance.api.sqlany_execute_direct(@connection, sql)
-			else
-			  stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-			  
-			  for i in 0...binds.length
-			    bind_type = binds[i][0].type
-			    bind_value = binds[i][1]
-				puts bind_type, bind_value.class, bind_value
-				result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
-				puts "1 success, 0 failure describe bind param #{result}"
-				bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
-				if bind_type == :datetime
-				  bind_param.set_value(bind_value.to_datetime.to_s :db)
-				  puts "date: #{bind_value.to_s :db}"
-				  puts "date: #{bind_value.strftime "%Y-%m-%d %H:%M:%S"}"
-				else
-		          bind_param.set_value(bind_value)
-				end
-				puts "1 success, 0 failure #{SA.instance.api.sqlany_bind_param(stmt, i, bind_param)}"
-				
-			  end
-			  
-			  puts "1 success, 0 failure execute #{SA.instance.api.sqlany_execute(stmt)}"
-			  puts SA.instance.api.sqlany_error(@connection)
-			  SA.instance.api.sqlany_free_stmt(stmt)
-			  
-			  # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
-			  puts "1 success, 0 failure commit #{SA.instance.api.sqlany_commit(@connection)}"
-			end
+        stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+
+        for i in 0...binds.length
+          bind_type = binds[i][0].type
+          bind_value = binds[i][1]
+          result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
+          bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
+          if bind_type == :datetime
+            bind_param.set_value(bind_value.to_datetime.to_s :db)
+          else
+            bind_param.set_value(bind_value)
+          end
+          SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
+
+        end
+
+        SA.instance.api.sqlany_execute(stmt)
+        puts SA.instance.api.sqlany_error(@connection)
+        
+        fields = []
+        for i in 0...SA.instance.api.sqlany_num_cols(stmt)
+          r, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
+          fields << name
+        end
+        rows = []
+        while SA.instance.api.sqlany_fetch_next(stmt) == 1
+          row = []
+          for i in 0...SA.instance.api.sqlany_num_cols(stmt)
+            r, value = SA.instance.api.sqlany_get_column(stmt, i)
+            row << value
+          end
+          rows << row
+        end
+        SA.instance.api.sqlany_free_stmt(stmt)
+        # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
+        SA.instance.api.sqlany_commit(@connection)
+        return ActiveRecord::Result.new(fields, rows)
 		  end
 		end
 

@@ -13,7 +13,10 @@ Gem::Specification.new do |s|
     "Rakefile",
     "test/connection.rb",
     "lib/active_record/connection_adapters/sqlanywhere_adapter.rb",
-    "lib/arel/visitors/sqlanywhere.rb"
+    "lib/arel/visitors/sqlanywhere.rb",
+    "lib/active_record/connection_adapters/sqlanywhere.rake",
+    "lib/activerecord-sqlanywhere-adapter.rb"
+
   ]
   s.homepage = %q{http://sqlanywhere.rubyforge.org}
   s.licenses = [%q{Apache License Version 2.0}]
