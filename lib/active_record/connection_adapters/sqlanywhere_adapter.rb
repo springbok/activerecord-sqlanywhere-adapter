@@ -583,6 +583,10 @@ SQL
           bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
           if bind_type == :datetime
             bind_param.set_value(bind_value.to_datetime.to_s :db)
+          elsif bind_type == :boolean
+            bind_param.set_value(bind_value ? 1 : 0)
+          elsif bind_type == :decimal
+            bind_param.set_value(bind_value.to_s)
           else
             bind_param.set_value(bind_value)
           end
