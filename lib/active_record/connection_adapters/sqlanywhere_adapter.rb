@@ -293,6 +293,10 @@ module ActiveRecord
       def insert_sql(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
         execute(sql, name)
         
+        last_inserted_id(nil)
+      end
+      
+      def last_inserted_id(result)
         identity = SA.instance.api.sqlany_execute_direct(@connection, 'SELECT @@identity')
         raise ActiveRecord::StatementInvalid.new("#{SA.instance.api.sqlany_error(@connection)}:#{sql}") if identity.nil?
         SA.instance.api.sqlany_fetch_next(identity)
