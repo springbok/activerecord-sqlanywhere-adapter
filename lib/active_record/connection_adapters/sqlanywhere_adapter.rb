@@ -391,9 +391,9 @@ module ActiveRecord
 
       def primary_key(table_name) #:nodoc:
         sql = "SELECT SYS.SYSTABCOL.column_name FROM (SYS.SYSTABLE JOIN SYS.SYSTABCOL) LEFT OUTER JOIN (SYS.SYSIDXCOL JOIN SYS.SYSIDX) WHERE table_name = '#{table_name}' AND SYS.SYSIDXCOL.sequence = 0"
-        rs = select(sql)
-        if !rs.nil? and !rs[0].nil?
-          rs[0]['column_name']
+        rs = exec_query(sql)
+        if !rs.nil? and !rs.first.nil?
+          rs.first['column_name']
         else
           nil
         end
