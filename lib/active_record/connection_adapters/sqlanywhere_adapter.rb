@@ -374,11 +374,10 @@ module ActiveRecord
 
       def columns(table_name, name = nil) #:nodoc:
         table_structure(table_name).map do |field|
-          field['default'] = field['default'][1..-2] if (!field['default'].nil? and field['default'][0].chr == "'")
           SQLAnywhereColumn.new(field['name'], field['default'], field['domain'], (field['nulls'] == 1))
         end
       end
-
+      
       def indexes(table_name, name = nil) #:nodoc:
         sql = "SELECT DISTINCT index_name, \"unique\" FROM SYS.SYSTABLE INNER JOIN SYS.SYSIDXCOL ON SYS.SYSTABLE.table_id = SYS.SYSIDXCOL.table_id INNER JOIN SYS.SYSIDX ON SYS.SYSTABLE.table_id = SYS.SYSIDX.table_id AND SYS.SYSIDXCOL.index_id = SYS.SYSIDX.index_id WHERE table_name = '#{table_name}' AND index_category > 2"
         select(sql, name).map do |row|
@@ -523,7 +522,9 @@ module ActiveRecord
         def table_structure(table_name)
           sql = <<-SQL
 SELECT SYS.SYSCOLUMN.column_name AS name, 
-  NULLIF(SYS.SYSCOLUMN."default", 'autoincrement') AS "default",
+  if left("default",1)='''' then substring("default", 2, length("default")-2) // remove the surrounding quotes
+  else NULLIF(SYS.SYSCOLUMN."default", 'autoincrement') 
+  endif AS "default",
   IF SYS.SYSCOLUMN.domain_id IN (7,8,9,11,33,34,35,3,27) THEN
     IF SYS.SYSCOLUMN.domain_id IN (3,27) THEN
       SYS.SYSDOMAIN.domain_name || '(' || SYS.SYSCOLUMN.width || ',' || SYS.SYSCOLUMN.scale || ')'
@@ -541,7 +542,7 @@ FROM
 WHERE
   table_name = '#{table_name}'
 SQL
-          structure = execute(sql, :skip_logging)
+          structure = exec_query(sql, :skip_logging)
           raise(ActiveRecord::StatementInvalid, "Could not find table '#{table_name}'") if structure == false
           structure
         end
@@ -574,7 +575,7 @@ SQL
 		def exec_query(sql, name = 'SQL', binds = [])
 		  log(sql, name, binds) do
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-
+        
         for i in 0...binds.length
           bind_type = binds[i][0].type
           bind_value = binds[i][1]
@@ -586,9 +587,9 @@ SQL
             bind_param.set_value(bind_value)
           end
           SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
-
+          
         end
-
+        
         SA.instance.api.sqlany_execute(stmt)
         puts SA.instance.api.sqlany_error(@connection)
         
