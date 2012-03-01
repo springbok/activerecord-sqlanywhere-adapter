@@ -396,7 +396,7 @@ module ActiveRecord
       end
 
       def primary_key(table_name) #:nodoc:
-        sql = "SELECT SYS.SYSTABCOL.column_name FROM (SYS.SYSTABLE JOIN SYS.SYSTABCOL) LEFT OUTER JOIN (SYS.SYSIDXCOL JOIN SYS.SYSIDX) WHERE table_name = '#{table_name}' AND SYS.SYSIDXCOL.sequence = 0"
+        sql = "SELECT cname from SYS.SYSCOLUMNS where tname = '#{table_name}' and in_primary_key = 'Y'"
         rs = exec_query(sql)
         if !rs.nil? and !rs.first.nil?
           rs.first['column_name']
@@ -607,7 +607,12 @@ SQL
             end
             
             SA.instance.api.sqlany_execute(stmt)
-            puts SA.instance.api.sqlany_error(@connection)
+            error_code, error_message = SA.instance.api.sqlany_error(@connection)
+            if error_code != 0
+              puts "#{error_code} #{error_message}"
+              puts sql
+              puts binds.map{|b|b[1]}.inspect
+            end
             
             fields = []
             for i in 0...SA.instance.api.sqlany_num_cols(stmt)
