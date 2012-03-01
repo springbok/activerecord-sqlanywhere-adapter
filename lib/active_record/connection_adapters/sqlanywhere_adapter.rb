@@ -599,6 +599,8 @@ SQL
                 bind_param.set_value(bind_value ? 1 : 0)
               elsif bind_type == :decimal
                 bind_param.set_value(bind_value.to_s)
+              elsif bind_type == :date
+                bind_param.set_value(bind_value.to_s)
               else
                 bind_param.set_value(bind_value)
               end
