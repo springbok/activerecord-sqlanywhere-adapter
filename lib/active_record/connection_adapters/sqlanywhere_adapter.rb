@@ -432,7 +432,13 @@ module ActiveRecord
       end
        
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
-        execute "ALTER TABLE #{quote_table_name(table_name)} RENAME #{quote_column_name(column_name)} TO #{quote_column_name(new_column_name)}"
+        if column_name.downcase == new_column_name.downcase
+          whine = "if_the_only_change_is_case_sqlanywhere_doesnt_rename_the_column"
+          rename_column table_name, column_name, "#{new_column_name}#{whine}"
+          rename_column table_name, "#{new_column_name}#{whine}", new_column_name
+        else
+          execute "ALTER TABLE #{quote_table_name(table_name)} RENAME #{quote_column_name(column_name)} TO #{quote_column_name(new_column_name)}"
+        end
       end
 
       def remove_column(table_name, column_name)
