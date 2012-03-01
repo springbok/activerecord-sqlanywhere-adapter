@@ -294,7 +294,9 @@ module ActiveRecord
       def insert_sql(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
         execute(sql, name)
         
-        last_inserted_id(nil)
+        retval =  last_inserted_id(nil)
+        retval = id_value if retval == 0
+        return retval
       end
       
       def last_inserted_id(result)
@@ -304,7 +306,6 @@ module ActiveRecord
         retval = SA.instance.api.sqlany_get_column(identity, 0)[1]
         SA.instance.api.sqlany_free_stmt(identity)
 
-        retval = id_value if retval == 0
         return retval
       end
       
