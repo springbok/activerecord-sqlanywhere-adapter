@@ -257,6 +257,7 @@ module ActiveRecord
       end
 
       def translate_exception(exception, message)
+        raise exception
         case exception.errno
           when -143
             if exception.sql !~ /^SELECT/i then
@@ -442,15 +443,15 @@ module ActiveRecord
       end
 	  
 	  				
-	def purge_database
-	  tables.each do |table_name|
-	    drop_table(table_name)
-	  end
-	end
+      def purge_database
+        tables.each do |table_name|
+          drop_table(table_name)
+        end
+      end
 
       protected
         def select(sql, name = nil, binds = []) #:nodoc:
-          exec_query(sql, name, binds)
+           exec_query(sql, name, binds).to_hash
         end
 
         # ActiveRecord uses the OFFSET/LIMIT keywords at the end of query to limit the number of items in the result set.
@@ -576,51 +577,51 @@ SQL
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 		
-		def exec_query(sql, name = 'SQL', binds = [])
-		  log(sql, name, binds) do
-        stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-        
-        for i in 0...binds.length
-          bind_type = binds[i][0].type
-          bind_value = binds[i][1]
-          result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
-          bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
-          if bind_type == :datetime
-            bind_param.set_value(bind_value.to_datetime.to_s :db)
-          elsif bind_type == :boolean
-            bind_param.set_value(bind_value ? 1 : 0)
-          elsif bind_type == :decimal
-            bind_param.set_value(bind_value.to_s)
-          else
-            bind_param.set_value(bind_value)
+        def exec_query(sql, name = 'SQL', binds = [])
+          log(sql, name, binds) do
+            stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+            
+            for i in 0...binds.length
+              bind_type = binds[i][0].type
+              bind_value = binds[i][1]
+              result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
+              bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
+              if bind_type == :datetime
+                bind_param.set_value(bind_value.to_datetime.to_s :db)
+              elsif bind_type == :boolean
+                bind_param.set_value(bind_value ? 1 : 0)
+              elsif bind_type == :decimal
+                bind_param.set_value(bind_value.to_s)
+              else
+                bind_param.set_value(bind_value)
+              end
+              SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
+              
+            end
+            
+            SA.instance.api.sqlany_execute(stmt)
+            puts SA.instance.api.sqlany_error(@connection)
+            
+            fields = []
+            for i in 0...SA.instance.api.sqlany_num_cols(stmt)
+              r, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
+              fields << name
+            end
+            rows = []
+            while SA.instance.api.sqlany_fetch_next(stmt) == 1
+              row = []
+              for i in 0...SA.instance.api.sqlany_num_cols(stmt)
+                r, value = SA.instance.api.sqlany_get_column(stmt, i)
+                row << value
+              end
+              rows << row
+            end
+            SA.instance.api.sqlany_free_stmt(stmt)
+            # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
+            SA.instance.api.sqlany_commit(@connection)
+            return ActiveRecord::Result.new(fields, rows)
           end
-          SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
-          
         end
-        
-        SA.instance.api.sqlany_execute(stmt)
-        puts SA.instance.api.sqlany_error(@connection)
-        
-        fields = []
-        for i in 0...SA.instance.api.sqlany_num_cols(stmt)
-          r, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
-          fields << name
-        end
-        rows = []
-        while SA.instance.api.sqlany_fetch_next(stmt) == 1
-          row = []
-          for i in 0...SA.instance.api.sqlany_num_cols(stmt)
-            r, value = SA.instance.api.sqlany_get_column(stmt, i)
-            row << value
-          end
-          rows << row
-        end
-        SA.instance.api.sqlany_free_stmt(stmt)
-        # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
-        SA.instance.api.sqlany_commit(@connection)
-        return ActiveRecord::Result.new(fields, rows)
-		  end
-		end
 
         def query(sql)
           return if sql.nil?
@@ -642,11 +643,11 @@ SQL
               max_cols = SA.instance.api.sqlany_num_cols(rs)
               result = Hash.new()
               max_cols.times do |cols|
-		col_content=SA.instance.api.sqlany_get_column(rs, cols)[1]
-		if !col_content.nil? && col_content.is_a?(String)
-		  puts ":encoding missing in database.yml" if ActiveRecord::Base.configurations[Rails.env]['encoding'].nil?
-		  col_content = col_content.force_encoding(ActiveRecord::Base.configurations[Rails.env]['encoding'])
-		end
+              col_content=SA.instance.api.sqlany_get_column(rs, cols)[1]
+              if !col_content.nil? && col_content.is_a?(String)
+                puts ":encoding missing in database.yml" if ActiveRecord::Base.configurations[Rails.env]['encoding'].nil?
+                col_content = col_content.force_encoding(ActiveRecord::Base.configurations[Rails.env]['encoding'])
+              end
                 result[SA.instance.api.sqlany_get_column_info(rs, cols)[2]] = col_content
               end
               record << result
