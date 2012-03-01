@@ -399,7 +399,7 @@ module ActiveRecord
         sql = "SELECT cname from SYS.SYSCOLUMNS where tname = '#{table_name}' and in_primary_key = 'Y'"
         rs = exec_query(sql)
         if !rs.nil? and !rs.first.nil?
-          rs.first['column_name']
+          rs.first['cname']
         else
           nil
         end
