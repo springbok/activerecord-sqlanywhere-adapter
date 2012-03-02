@@ -78,7 +78,6 @@ module ActiveRecord
         super(message)
         @errno = errno
         @sql = sql
-		@visitor = Arel::Visitors::SQLAnywhere.new
       end
     end
   
@@ -132,6 +131,16 @@ module ActiveRecord
         @affected_rows = 0
         @connection_string = connection_string
         connect!
+      end
+      
+      def self.visitor_for(pool)
+        config = pool.spec.config
+        
+        if config.fetch(:prepared_statements) {true}
+          Arel::Visitors::SQLAnywhere.new pool
+        else
+          BindSubstitution.new pool
+        end
       end
 
       def adapter_name #:nodoc:
@@ -250,14 +259,26 @@ module ActiveRecord
       # The database execution function
       def execute(sql, name = nil) #:nodoc:
         if name == :skip_logging
-		  SA.instance.api.sqlany_execute_immediate(@connection, sql)
+          r = SA.instance.api.sqlany_execute_immediate(@connection, sql)
+          sqlanywhere_error_test(sql) if r==0
         else
-          log(sql, name) { SA.instance.api.sqlany_execute_immediate(@connection, sql) }
+          log(sql, name) { execute(sql, :skip_logging) }
         end        
+      end
+      
+      def sqlanywhere_error_test(sql = '')
+        error_code, error_message = SA.instance.api.sqlany_error(@connection)
+        if error_code != 0
+          sqlanywhere_error(error_code, error_message, sql)
+        end
+      end
+      
+      def sqlanywhere_error(code, message, sql)        
+        raise SQLAnywhereException.new(message, code, sql)
       end
 
       def translate_exception(exception, message)
-        raise exception
+        return super unless exception.respond_to?(:errno)
         case exception.errno
           when -143
             if exception.sql !~ /^SELECT/i then
@@ -588,10 +609,16 @@ SQL
           log(sql, name, binds) do
             stmt = SA.instance.api.sqlany_prepare(@connection, sql)
             
+            if stmt.nil?
+              sqlanywhere_error_test(sql)
+            end
+            
             for i in 0...binds.length
               bind_type = binds[i][0].type
               bind_value = binds[i][1]
               result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
+              sqlanywhere_error_test(sql) if result==0
+              
               bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
               if bind_type == :datetime
                 bind_param.set_value(bind_value.to_datetime.to_s :db)
@@ -604,35 +631,41 @@ SQL
               else
                 bind_param.set_value(bind_value)
               end
-              SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
+              result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
+              sqlanywhere_error_test(sql) if result==0
               
             end
             
-            SA.instance.api.sqlany_execute(stmt)
-            error_code, error_message = SA.instance.api.sqlany_error(@connection)
-            if error_code != 0
-              puts "#{error_code} #{error_message}"
-              puts sql
-              puts binds.map{|b|b[1]}.inspect
+            if SA.instance.api.sqlany_execute(stmt) == 0
+              sqlanywhere_error_test(sql)
             end
             
             fields = []
-            for i in 0...SA.instance.api.sqlany_num_cols(stmt)
-              r, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
+            
+            num_cols = SA.instance.api.sqlany_num_cols(stmt)
+            sqlanywhere_error_test(sql) if num_cols == -1
+            
+            for i in 0...num_cols
+              result, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
+              sqlanywhere_error_test(sql) if result==0
               fields << name
             end
             rows = []
             while SA.instance.api.sqlany_fetch_next(stmt) == 1
               row = []
-              for i in 0...SA.instance.api.sqlany_num_cols(stmt)
+              for i in 0...num_cols
                 r, value = SA.instance.api.sqlany_get_column(stmt, i)
                 row << value
               end
               rows << row
             end
             SA.instance.api.sqlany_free_stmt(stmt)
-            # probably shouldn't commit yet, but I'm interested to see if my insert worked at all
-            SA.instance.api.sqlany_commit(@connection)
+            
+            if @auto_commit
+              result = SA.instance.api.sqlany_commit(@connection)
+              sqlanywhere_error_test(sql) if result==0
+            end
+            
             return ActiveRecord::Result.new(fields, rows)
           end
         end
