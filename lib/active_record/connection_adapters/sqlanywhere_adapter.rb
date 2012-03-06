@@ -646,6 +646,7 @@ SQL
             end
             
             fields = []
+            native_types = []
             
             num_cols = SA.instance.api.sqlany_num_cols(stmt)
             sqlanywhere_error_test(sql) if num_cols == -1
@@ -654,13 +655,15 @@ SQL
               result, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
               sqlanywhere_error_test(sql) if result==0
               fields << name
+              native_type = SA.instance.api.sqlany_get_column_info(stmt, i)[4]
+              native_types << native_type
             end
             rows = []
             while SA.instance.api.sqlany_fetch_next(stmt) == 1
               row = []
               for i in 0...num_cols
                 r, value = SA.instance.api.sqlany_get_column(stmt, i)
-                row << value
+                row << native_type_to_ruby_type(native_types[i], value)
               end
               rows << row
             end
@@ -712,6 +715,18 @@ SQL
 
           SA.instance.api.sqlany_commit(@connection) if @auto_commit
           return record
+        end
+        
+        # convert sqlany type to ruby type
+        # the types are taken from here
+        # http://dcx.sybase.com/1101/en/dbprogramming_en11/pg-c-api-native-type-enum.html
+        def native_type_to_ruby_type(native_type, value)
+          case native_type
+          when 484 # DT_DECIMAL (also and more importantly numeric)
+            BigDecimal.new(value)
+          else
+            value
+          end
         end
     end
   end
