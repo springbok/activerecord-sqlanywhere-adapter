@@ -124,7 +124,20 @@ module ActiveRecord
 		# Sybase doesn't like the time zones.
 		
     end
-
+    
+    module SchemaStatements
+      def add_column_options_sqlanywhere!(sql, options) #:nodoc:
+        add_column_options_base!(sql, options)
+        # need to explicitly allow null for bit type column
+        # there is no harm in allowing it for all columns
+        if options[:null] != false
+          sql << " NULL"
+        end
+      end
+      alias :add_column_options_base! :add_column_options!
+      alias :add_column_options! :add_column_options_sqlanywhere!
+    end
+    
     class SQLAnywhereAdapter < AbstractAdapter
       def initialize( connection, logger, connection_string = "") #:nodoc:
         super(connection, logger)
