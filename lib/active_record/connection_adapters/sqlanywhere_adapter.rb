@@ -85,7 +85,8 @@ module ActiveRecord
       private
         # Overridden to handle SQL Anywhere integer, varchar, binary, and timestamp types
         def simplified_type(field_type)
-          return :boolean if field_type =~ /tinyint/i
+          return :boolean if field_type =~ /bit/i
+          return :text if field_type =~ /long varchar/i
           return :string if field_type =~ /varchar/i
           return :binary if field_type =~ /long binary/i
           return :datetime if field_type =~ /timestamp/i
@@ -198,7 +199,7 @@ module ActiveRecord
           :time        => { :name => "time" },
           :date        => { :name => "date" },
           :binary      => { :name => "long binary" },
-          :boolean     => { :name => "tinyint"}
+          :boolean     => { :name => "bit"}
         }
       end
 
