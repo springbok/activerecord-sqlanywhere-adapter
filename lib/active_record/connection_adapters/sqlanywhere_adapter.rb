@@ -204,7 +204,7 @@ module ActiveRecord
           :primary_key => 'INTEGER PRIMARY KEY DEFAULT AUTOINCREMENT NOT NULL',
           :string      => { :name => "varchar", :limit => 255 },
           :text        => { :name => "long varchar" },
-          :integer     => { :name => "integer" },
+          :integer     => { :name => "integer", :limit => 4 },
           :float       => { :name => "float" },
           :decimal     => { :name => "decimal" },
           :datetime    => { :name => "datetime" },
@@ -382,6 +382,7 @@ module ActiveRecord
       # SQL Anywhere does not support sizing of integers based on the sytax INTEGER(size). Integer sizes
       # must be captured when generating the SQL and replaced with the appropriate size.
       def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
+        type = type.to_sym
         if native = native_database_types[type]
           if type == :integer
             case limit
