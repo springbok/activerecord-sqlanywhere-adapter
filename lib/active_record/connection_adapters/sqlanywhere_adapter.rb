@@ -661,7 +661,6 @@ SQL
               result, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
               sqlanywhere_error_test(sql) if result==0
               fields << name
-              native_type = SA.instance.api.sqlany_get_column_info(stmt, i)[4]
               native_types << native_type
             end
             rows = []
@@ -727,6 +726,7 @@ SQL
         # the types are taken from here
         # http://dcx.sybase.com/1101/en/dbprogramming_en11/pg-c-api-native-type-enum.html
         def native_type_to_ruby_type(native_type, value)
+          return nil if value.nil?
           case native_type
           when 484 # DT_DECIMAL (also and more importantly numeric)
             BigDecimal.new(value)
