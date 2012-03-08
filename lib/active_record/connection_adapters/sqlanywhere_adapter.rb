@@ -85,6 +85,7 @@ module ActiveRecord
       private
         # Overridden to handle SQL Anywhere integer, varchar, binary, and timestamp types
         def simplified_type(field_type)
+          return :boolean if field_type =~ /tinyint/i
           return :boolean if field_type =~ /bit/i
           return :text if field_type =~ /long varchar/i
           return :string if field_type =~ /varchar/i
@@ -123,19 +124,6 @@ module ActiveRecord
 		# Should override the time column values.
 		# Sybase doesn't like the time zones.
 		
-    end
-    
-    module SchemaStatements
-      def add_column_options_sqlanywhere!(sql, options) #:nodoc:
-        add_column_options_base!(sql, options)
-        # need to explicitly allow null for bit type column
-        # there is no harm in allowing it for all columns
-        if options[:null] != false
-          sql << " NULL"
-        end
-      end
-      alias :add_column_options_base! :add_column_options!
-      alias :add_column_options! :add_column_options_sqlanywhere!
     end
     
     class SQLAnywhereAdapter < AbstractAdapter
@@ -212,7 +200,7 @@ module ActiveRecord
           :time        => { :name => "time" },
           :date        => { :name => "date" },
           :binary      => { :name => "long binary" },
-          :boolean     => { :name => "bit"}
+          :boolean     => { :name => "tinyint", :limit => 1}
         }
       end
 
@@ -400,6 +388,8 @@ module ActiveRecord
                column_type_sql
           elsif type == :string and !limit.nil?
              "varchar (#{limit} character)"
+          elsif type == :boolean
+            column_type_sql = 'tinyint'
           else 
             super(type, limit, precision, scale)
           end
