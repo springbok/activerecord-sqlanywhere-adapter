@@ -19,7 +19,7 @@ module Arel
     [
       "SELECT",
       ("DISTINCT" if (o.limit || o.offset) && is_distinct),
-      ("TOP (#{o.limit})" if o.limit),
+      ("TOP #{o.limit}" if o.limit),
       (visit_Arel_Nodes_Offset(o.offset) if o.offset),
       o.cores.map { |x| visit_Arel_Nodes_SelectCore x }.join,
       ("ORDER BY #{o.orders.map { |x| visit x }.join(', ')}" unless o.orders.empty?),
