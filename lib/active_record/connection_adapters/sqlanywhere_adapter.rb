@@ -52,16 +52,20 @@ module ActiveRecord
     # * :connection_name (optional). Corresponds to "ConnectionName=" in connection string
     
     def self.sqlanywhere_connection(config)
+      
+      if config[:connection_string]
+        connection_string = config[:connection_string]
+      else
+        config = DEFAULT_CONFIG.merge(config)
 
-      config = DEFAULT_CONFIG.merge(config)
+        raise ArgumentError, "No database name was given. Please add a :database option." unless config.has_key?(:database)
 
-      raise ArgumentError, "No database name was given. Please add a :database option." unless config.has_key?(:database)
-
-      connection_string = "ServerName=#{(config[:server] || config[:database])};DatabaseName=#{config[:database]};UserID=#{config[:username]};Password=#{config[:password]};"
-      connection_string += "CommLinks=#{config[:commlinks]};" unless config[:commlinks].nil?
-      connection_string += "ConnectionName=#{config[:connection_name]};" unless config[:connection_name].nil?
-      connection_string += "CharSet=#{config[:encoding]};" unless config[:encoding].nil?      
-      connection_string += "Idle=0" # Prevent the server from disconnecting us if we're idle for >240mins (by default)
+        connection_string = "ServerName=#{(config[:server] || config[:database])};DatabaseName=#{config[:database]};UserID=#{config[:username]};Password=#{config[:password]};"
+        connection_string += "CommLinks=#{config[:commlinks]};" unless config[:commlinks].nil?
+        connection_string += "ConnectionName=#{config[:connection_name]};" unless config[:connection_name].nil?
+        connection_string += "CharSet=#{config[:encoding]};" unless config[:encoding].nil?      
+        connection_string += "Idle=0" # Prevent the server from disconnecting us if we're idle for >240mins (by default)
+      end
 
       db = SA.instance.api.sqlany_new_connection()
       
@@ -490,7 +494,7 @@ module ActiveRecord
 
       protected
         def select(sql, name = nil, binds = []) #:nodoc:
-           exec_query(sql, name, binds).to_hash
+           exec_query(sql, name, binds).to_a
         end
 
         # ActiveRecord uses the OFFSET/LIMIT keywords at the end of query to limit the number of items in the result set.
@@ -631,7 +635,9 @@ SQL
               sqlanywhere_error_test(sql) if result==0
               
               bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
-              if bind_type == :datetime
+              if bind_value.nil?
+                bind_param.set_value(nil)
+              elsif bind_type == :datetime
                 bind_param.set_value(bind_value.to_datetime.to_s :db)
               elsif bind_type == :boolean
                 bind_param.set_value(bind_value ? 1 : 0)
