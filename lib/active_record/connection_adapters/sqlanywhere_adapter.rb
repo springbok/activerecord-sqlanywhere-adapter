@@ -326,6 +326,12 @@ module ActiveRecord
         return retval
       end
       
+      def exec_delete(sql, name = 'SQL', binds = [])
+        exec_query(sql, name, binds)
+        @affected_rows
+      end
+      alias :exec_update :exec_delete
+      
       def last_inserted_id(result)
         identity = SA.instance.api.sqlany_execute_direct(@connection, 'SELECT @@identity')
         raise ActiveRecord::StatementInvalid.new("#{SA.instance.api.sqlany_error(@connection)}:#{sql}") if identity.nil?
@@ -684,7 +690,6 @@ SQL
               result = SA.instance.api.sqlany_commit(@connection)
               sqlanywhere_error_test(sql) if result==0
             end
-            
             return ActiveRecord::Result.new(fields, rows)
           end
         end
