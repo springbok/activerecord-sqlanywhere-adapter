@@ -397,7 +397,7 @@ module ActiveRecord
             end
                column_type_sql
           elsif type == :string and !limit.nil?
-             "varchar (#{limit} character)"
+             "varchar (#{limit})"
           elsif type == :boolean
             column_type_sql = 'tinyint'
           else 
