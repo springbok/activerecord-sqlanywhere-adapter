@@ -136,6 +136,7 @@ module ActiveRecord
         @auto_commit = true
         @affected_rows = 0
         @connection_string = connection_string
+        @visitor = Arel::Visitors::SQLAnywhere.new self
         connect!
       end
       
