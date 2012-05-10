@@ -41,7 +41,6 @@ module Arel
 
 
   def using_distinct?(o)
-    debugger
     o.cores.any? do |core|
       core.set_quantifier.class == Arel::Nodes::Distinct
     end
