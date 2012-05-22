@@ -747,6 +747,9 @@ SQL
           case native_type
           when 484 # DT_DECIMAL (also and more importantly numeric)
             BigDecimal.new(value)
+          when 448,452,456,460,640  # DT_VARCHAR, DT_FIXCHAR, DT_LONGVARCHAR, DT_STRING, DT_LONGNVARCHAR
+            # hack, not sure how to manage proper encoding
+            value.force_encoding("UTF-8")
           else
             value
           end
