@@ -96,6 +96,8 @@ module ActiveRecord
           return :binary if field_type =~ /long binary/i
           return :datetime if field_type =~ /timestamp/i
           return :integer if field_type =~ /smallint|bigint/i
+          return :text if field_type =~ /xml/i
+          return :integer if field_type =~ /uniqueidentifier/i
           super
         end
 
@@ -204,7 +206,7 @@ module ActiveRecord
           :timestamp   => { :name => "datetime" },
           :time        => { :name => "time" },
           :date        => { :name => "date" },
-          :binary      => { :name => "long binary" },
+          :binary      => { :name => "binary" },
           :boolean     => { :name => "tinyint", :limit => 1}
         }
       end
