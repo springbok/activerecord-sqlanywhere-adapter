@@ -408,6 +408,16 @@ module ActiveRecord
           super(type, limit, precision, scale)
         end
       end
+      
+      def viewed_tables(name = nil)
+        sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type='view' and creator NOT IN (0,3,5)"
+        select(sql, name).map { |row| row["table_name"] }
+      end
+      
+      def base_tables(name = nil)
+        sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type='base' and creator NOT IN (0,3,5)"
+        select(sql, name).map { |row| row["table_name"] }
+      end
 
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
@@ -497,8 +507,8 @@ module ActiveRecord
 	  
 	  				
       def purge_database
-        tables.each do |table_name|
-          drop_table(table_name)
+        base_tables.each do |base_table_name|
+          drop_table(base_table_name)
         end
       end
 
