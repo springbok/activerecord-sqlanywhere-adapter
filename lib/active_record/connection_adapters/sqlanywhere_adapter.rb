@@ -410,19 +410,16 @@ module ActiveRecord
       end
       
       def viewed_tables(name = nil)
-        sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type='view' and creator NOT IN (0,3,5)"
-        select(sql, name).map { |row| row["table_name"] }
+        list_of_tables(['view'], name)
       end
       
       def base_tables(name = nil)
-        sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type='base' and creator NOT IN (0,3,5)"
-        select(sql, name).map { |row| row["table_name"] }
+        list_of_tables(['base'], name)
       end
 
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
-          sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
-          select(sql, name).map { |row| row["table_name"] }
+        list_of_tables(['base', 'view'])
       end
 
       def columns(table_name, name = nil) #:nodoc:
@@ -513,6 +510,12 @@ module ActiveRecord
       end
 
       protected
+      
+        def list_of_tables(types, name = nil)
+          sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type in (#{types.map{|t| quote(t)}.join(', ')}) and creator NOT IN (0,3,5)"
+          select(sql, name).map { |row| row["table_name"] }
+        end
+      
         def select(sql, name = nil, binds = []) #:nodoc:
            exec_query(sql, name, binds).to_a
         end
