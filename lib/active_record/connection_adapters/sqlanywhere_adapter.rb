@@ -511,6 +511,10 @@ module ActiveRecord
         end
       end
 
+      def select(sql, name = nil, binds = []) #:nodoc:
+         exec_query(sql, name, binds).to_a
+      end
+
       protected
       
         def list_of_tables(types, name = nil)
@@ -518,10 +522,6 @@ module ActiveRecord
           select(sql, name).map { |row| row["table_name"] }
         end
       
-        def select(sql, name = nil, binds = []) #:nodoc:
-           exec_query(sql, name, binds).to_a
-        end
-
         # ActiveRecord uses the OFFSET/LIMIT keywords at the end of query to limit the number of items in the result set.
         # This syntax is NOT supported by SQL Anywhere. In previous versions of this adapter this adapter simply
         # overrode the add_limit_offset function and added the appropriate TOP/START AT keywords to the start of the query.
