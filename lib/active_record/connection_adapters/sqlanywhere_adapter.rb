@@ -764,7 +764,19 @@ SQL
             BigDecimal.new(value)
           when 448,452,456,460,640  # DT_VARCHAR, DT_FIXCHAR, DT_LONGVARCHAR, DT_STRING, DT_LONGNVARCHAR
             # hack, not sure how to manage proper encoding
-            value.force_encoding("UTF-8")
+            value = value.force_encoding("UTF-8")
+            # Why am I removing the whitespace from the end of the string?
+            #
+            # Sqlanywhere allowed us to create a string foreign key.
+            # Somehow on only one end of the foreign key, the values got spaces at the end.
+            # The foreign key was still valid in Sqlanywhere: It worked for joins and it worked for referencing constraints.
+            # 
+            # It however does not work for the ActiveRecord includes method.
+            # Rails will bring back the associated records, but then it fails to pair the records correctly.
+            # Removing whitespace from the ends of all strings fixes this. It is a hack however, so I'm open
+            # for suggestions on coming up with a better method.
+            #
+            value = value.gsub(/ +$/, "")
           else
             value
           end
