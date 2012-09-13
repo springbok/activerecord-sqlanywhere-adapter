@@ -38,6 +38,14 @@ module Arel
       def visit_Arel_Nodes_Offset o
         "START AT #{visit(o.expr) + 1}"
       end
+      
+      def visit_Arel_Nodes_True o
+        "1=1"
+      end
+      
+      def visit_Arel_Nodes_False o
+        "1=0"
+      end
 
 
   def using_distinct?(o)
