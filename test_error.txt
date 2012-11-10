@@ -1,0 +1,239 @@
+** Invoke test_sqlanywhere (first_time)
+** Invoke sqlanywhere:env (first_time)
+** Execute sqlanywhere:env
+** Execute test_sqlanywhere
+/home/chris/.rvm/rubies/ruby-1.9.3-p286/bin/ruby -w -I"lib:test" -I"/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib" "/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/rake_test_loader.rb" "test/cases/adapter_test.rb" "test/cases/aggregations_test.rb" "test/cases/ar_schema_test.rb" "test/cases/associations/association_scope_test.rb" "test/cases/associations/belongs_to_associations_test.rb" "test/cases/associations/callbacks_test.rb" "test/cases/associations/cascaded_eager_loading_test.rb" "test/cases/associations/eager_load_includes_full_sti_class_test.rb" "test/cases/associations/eager_load_nested_include_test.rb" "test/cases/associations/eager_singularization_test.rb" "test/cases/associations/eager_test.rb" "test/cases/associations/extension_test.rb" "test/cases/associations/habtm_join_table_test.rb" "test/cases/associations/has_and_belongs_to_many_associations_test.rb" "test/cases/associations/has_many_associations_test.rb" "test/cases/associations/has_many_through_associations_test.rb" "test/cases/associations/has_one_associations_test.rb" "test/cases/associations/has_one_through_associations_test.rb" "test/cases/associations/inner_join_association_test.rb" "test/cases/associations/inverse_associations_test.rb" "test/cases/associations/join_dependency_test.rb" "test/cases/associations/join_model_test.rb" "test/cases/associations/nested_through_associations_test.rb" "test/cases/associations_test.rb" "test/cases/attribute_methods/read_test.rb" "test/cases/attribute_methods_test.rb" "test/cases/autosave_association_test.rb" "test/cases/base_test.rb" "test/cases/batches_test.rb" "test/cases/binary_test.rb" "test/cases/bind_parameter_test.rb" "test/cases/calculations_test.rb" "test/cases/callbacks_test.rb" "test/cases/clone_test.rb" "test/cases/coders/yaml_column_test.rb" "test/cases/column_alias_test.rb" "test/cases/column_definition_test.rb" "test/cases/column_test.rb" "test/cases/connection_adapters/abstract_adapter_test.rb" "test/cases/connection_adapters/connection_handler_test.rb" "test/cases/connection_adapters/connection_specification_test.rb" "test/cases/connection_adapters/quoting_test.rb" "test/cases/connection_adapters/schema_cache_test.rb" "test/cases/connection_management_test.rb" "test/cases/connection_pool_test.rb" "test/cases/connection_specification/resolver_test.rb" "test/cases/counter_cache_test.rb" "test/cases/custom_locking_test.rb" "test/cases/database_statements_test.rb" "test/cases/date_time_test.rb" "test/cases/defaults_test.rb" "test/cases/deprecated_dynamic_methods_test.rb" "test/cases/dirty_test.rb" "test/cases/dup_test.rb" "test/cases/explain_subscriber_test.rb" "test/cases/explain_test.rb" "test/cases/finder_respond_to_test.rb" "test/cases/finder_test.rb" "test/cases/fixture_set/file_test.rb" "test/cases/fixtures_test.rb" "test/cases/forbidden_attributes_protection_test.rb" "test/cases/habtm_destroy_order_test.rb" "test/cases/hot_compatibility_test.rb" "test/cases/i18n_test.rb" "test/cases/inheritance_test.rb" "test/cases/invalid_date_test.rb" "test/cases/invertible_migration_test.rb" "test/cases/json_serialization_test.rb" "test/cases/lifecycle_test.rb" "test/cases/locking_test.rb" "test/cases/log_subscriber_test.rb" "test/cases/migration/change_schema_test.rb" "test/cases/migration/change_table_test.rb" "test/cases/migration/column_attributes_test.rb" "test/cases/migration/column_positioning_test.rb" "test/cases/migration/command_recorder_test.rb" "test/cases/migration/create_join_table_test.rb" "test/cases/migration/index_test.rb" "test/cases/migration/logger_test.rb" "test/cases/migration/references_index_test.rb" "test/cases/migration/references_statements_test.rb" "test/cases/migration/rename_column_test.rb" "test/cases/migration/rename_table_test.rb" "test/cases/migration/table_and_index_test.rb" "test/cases/migration_test.rb" "test/cases/migrator_test.rb" "test/cases/mixin_test.rb" "test/cases/modules_test.rb" "test/cases/multiparameter_attributes_test.rb" "test/cases/multiple_db_test.rb" "test/cases/named_scope_test.rb" "test/cases/nested_attributes_test.rb" "test/cases/persistence_test.rb" "test/cases/pooled_connections_test.rb" "test/cases/primary_keys_test.rb" "test/cases/query_cache_test.rb" "test/cases/quoting_test.rb" "test/cases/readonly_test.rb" "test/cases/reaper_test.rb" "test/cases/reflection_test.rb" "test/cases/relation/where_test.rb" "test/cases/relation_scoping_test.rb" "test/cases/relation_test.rb" "test/cases/relations_test.rb" "test/cases/reload_models_test.rb" "test/cases/sanitize_test.rb" "test/cases/schema_dumper_test.rb" "test/cases/serialization_test.rb" "test/cases/serialized_attribute_test.rb" "test/cases/store_test.rb" "test/cases/tasks/database_tasks_test.rb" "test/cases/tasks/mysql_rake_test.rb" "test/cases/tasks/postgresql_rake_test.rb" "test/cases/tasks/sqlite_rake_test.rb" "test/cases/timestamp_test.rb" "test/cases/transaction_callbacks_test.rb" "test/cases/transaction_isolation_test.rb" "test/cases/transactions_test.rb" "test/cases/unconnected_test.rb" "test/cases/validations/association_validation_test.rb" "test/cases/validations/i18n_generate_message_validation_test.rb" "test/cases/validations/i18n_validation_test.rb" "test/cases/validations/presence_validation_test.rb" "test/cases/validations/uniqueness_validation_test.rb" "test/cases/validations_test.rb" "test/cases/xml_serialization_test.rb" "test/cases/yaml_serialization_test.rb" 
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/bundler-1.2.1/lib/bundler/definition.rb:233: warning: assigned but unused variable - e
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/bundler-1.2.1/lib/bundler/source.rb:516: warning: method redefined; discarding old revision
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:175: warning: assigned but unused variable - result
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:341: warning: assigned but unused variable - native
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - col_num
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - ruby_type
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - precision
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - scale
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - max_size
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - nullable
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:600: warning: assigned but unused variable - r
+/home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
+/home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
+/home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:532:in `connect!': [-1, "Failed to initialize connection object"]: Cannot Establish Connection (ActiveRecord::ActiveRecordError)
+	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:142:in `initialize'
+	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:72:in `new'
+	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:72:in `sqlanywhere_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:444:in `new_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:454:in `checkout_new_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:425:in `acquire_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:362:in `block in checkout'
+	from /home/chris/.rvm/rubies/ruby-1.9.3-p286/lib/ruby/1.9.1/monitor.rb:211:in `mon_synchronize'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:361:in `checkout'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:271:in `block in connection'
+	from /home/chris/.rvm/rubies/ruby-1.9.3-p286/lib/ruby/1.9.1/monitor.rb:211:in `mon_synchronize'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:270:in `connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/connection_pool.rb:542:in `retrieve_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_handling.rb:79:in `retrieve_connection'
+	from /home/chris/Documents/rails/activerecord/lib/active_record/connection_handling.rb:53:in `connection'
+	from /home/chris/Documents/rails/activerecord/test/cases/connection_management_test.rb:38:in `block in test_connection_pool_per_pid'
+	from /home/chris/Documents/rails/activerecord/test/cases/connection_management_test.rb:36:in `fork'
+	from /home/chris/Documents/rails/activerecord/test/cases/connection_management_test.rb:36:in `test_connection_pool_per_pid'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1292:in `run'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:910:in `block in _run_suite'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:903:in `map'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:903:in `_run_suite'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:890:in `block in _run_suites'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:890:in `map'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:890:in `_run_suites'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:858:in `_run_anything'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1051:in `run_tests'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1038:in `block in _run'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1037:in `each'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1037:in `_run'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:1026:in `run'
+	from /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/gems/minitest-4.2.0/lib/minitest/unit.rb:780:in `block in autorun'
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/attribute_methods_test.rb:25: warning: instance variable @old_matchers not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/deprecated_dynamic_methods_test.rb:29: warning: instance variable @deprecation_behavior not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+/home/chris/Documents/rails/activerecord/test/cases/validations/i18n_validation_test.rb:18: warning: instance variable @old_load_path not initialized
+rake aborted!
+Command failed with status (1): [/home/chris/.rvm/rubies/ruby-1.9.3-p286/bi...]
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils.rb:53:in `block in create_shell_runner'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils.rb:45:in `call'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils.rb:45:in `sh'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils_ext.rb:39:in `sh'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils.rb:82:in `ruby'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils_ext.rb:39:in `ruby'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/testtask.rb:99:in `block (2 levels) in define'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/file_utils_ext.rb:60:in `verbose'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/testtask.rb:98:in `block in define'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:205:in `call'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:205:in `block in execute'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:200:in `each'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:200:in `execute'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:158:in `block in invoke_with_call_chain'
+/home/chris/.rvm/rubies/ruby-1.9.3-p286/lib/ruby/1.9.1/monitor.rb:211:in `mon_synchronize'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:151:in `invoke_with_call_chain'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/task.rb:144:in `invoke'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:116:in `invoke_task'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:94:in `block (2 levels) in top_level'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:94:in `each'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:94:in `block in top_level'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:133:in `standard_exception_handling'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:88:in `top_level'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:66:in `block in run'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:133:in `standard_exception_handling'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/lib/rake/application.rb:63:in `run'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/rake-0.9.2.2/bin/rake:33:in `<top (required)>'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/bin/rake:19:in `load'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@global/bin/rake:19:in `<main>'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bin/ruby_noexec_wrapper:14:in `eval'
+/home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bin/ruby_noexec_wrapper:14:in `<main>'
+Tasks: TOP => test_sqlanywhere

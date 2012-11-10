@@ -365,17 +365,27 @@ module ActiveRecord
         end
       end
       
-      def viewed_tables(name = nil)
-        list_of_tables(['view'], name)
-      end
-      
-      def base_tables(name = nil)
-        list_of_tables(['base'], name)
-      end
-
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
-        list_of_tables(['base', 'view'])
+        sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
+        exec_query(sql, name).map { |row| row["table_name"] }
+      end
+
+      # Does the table exist?
+      # Name can be of the form 'schema_migrations' or 'dba.schema_migrations'.
+      # In the later case it will see if the table exists for the current user.
+      def table_exists?(name)
+        user, table = name.to_s.split('.')
+        if table == nil
+            table = name
+            user = ActiveRecord::Base.connection_config['username']
+        end
+        sql = <<-SQL
+        SELECT 1
+        FROM SYS.SYSTABLE JOIN SYS.SYSUSER ON SYS.SYSTABLE.creator = SYS.SYSUSER.user_id
+        WHERE SYS.SYSTABLE.table_name = '#{table}' and SYS.SYSUSER.user_name = '#{user}'
+        SQL
+        exec_query(sql) == [[1]]
       end
 
       def columns(table_name, name = nil) #:nodoc:
@@ -474,11 +484,6 @@ module ActiveRecord
            exec_query(sql, name, binds)
         end
 
-        def list_of_tables(types, name = nil)
-          sql = "SELECT table_name FROM SYS.SYSTABLE WHERE table_type in (#{types.map{|t| quote(t)}.join(', ')}) and creator NOT IN (0,3,5)"
-          exec_query(sql, name).map { |row| row["table_name"] }
-        end
-      
         # Queries the structure of a table including the columns names, defaults, type, and nullability 
         # ActiveRecord uses the type to parse scale and precision information out of the types. As a result,
         # chars, varchars, binary, nchars, nvarchars must all be returned in the form <i>type</i>(<i>width</i>)
