@@ -612,7 +612,7 @@ SQL
           when 484 # DT_DECIMAL (also and more importantly numeric)
             BigDecimal.new(value)
           when 448,452,456,460,640  # DT_VARCHAR, DT_FIXCHAR, DT_LONGVARCHAR, DT_STRING, DT_LONGNVARCHAR
-            value = value.force_encoding(ActiveRecord::Base.configurations[Rails.env]['encoding'] || "UTF-8")
+            value = value.force_encoding(ActiveRecord::Base.connection_config['encoding'] || "UTF-8")
             
             # Why am I removing the whitespace from the end of the string?
             #
