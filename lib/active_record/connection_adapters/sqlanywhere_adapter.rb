@@ -385,9 +385,6 @@ module ActiveRecord
       end
       
       def indexes(table_name, name = nil) #:nodoc:
-        if @major_version <= 11 # the sql doesn't work in older databases.
-          return []
-        end
         sql = "SELECT DISTINCT index_name, \"unique\" FROM SYS.SYSTABLE INNER JOIN SYS.SYSIDXCOL ON SYS.SYSTABLE.table_id = SYS.SYSIDXCOL.table_id INNER JOIN SYS.SYSIDX ON SYS.SYSTABLE.table_id = SYS.SYSIDX.table_id AND SYS.SYSIDXCOL.index_id = SYS.SYSIDX.index_id WHERE table_name = '#{table_name}' AND index_category > 2"
         exec_query(sql, name).map do |row|
           index = IndexDefinition.new(table_name, row['index_name'])
@@ -520,8 +517,6 @@ SQL
             error = SA.instance.api.sqlany_error(@connection)
             raise ActiveRecord::ActiveRecordError.new("#{error}: Cannot Establish Connection")
           end
-          version = exec_query('select @@version').rows[0][0]
-          @major_version = /^\d+/.match(version).to_s.to_i
         end
 
         def set_connection_options
