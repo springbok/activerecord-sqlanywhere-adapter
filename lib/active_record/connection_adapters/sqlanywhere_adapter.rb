@@ -454,6 +454,18 @@ module ActiveRecord
           exec_query "ALTER TABLE #{quote_table_name(table_name)} DROP #{column_name}"
         end
       end
+
+     def disable_referential_integrity(&block) #:nodoc:
+       old = select_value("SELECT connection_property( 'wait_for_commit' )")
+ 
+       begin
+         update("SET TEMPORARY OPTION wait_for_commit = ON")
+         yield
+       ensure
+         update("SET TEMPORARY OPTION wait_for_commit = #{old}")
+       end
+     end
+      
 	  
 	  				
       protected
