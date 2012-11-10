@@ -381,11 +381,11 @@ module ActiveRecord
             user = ActiveRecord::Base.connection_config['username']
         end
         sql = <<-SQL
-        SELECT 1
+        SELECT COUNT(*)
         FROM SYS.SYSTABLE JOIN SYS.SYSUSER ON SYS.SYSTABLE.creator = SYS.SYSUSER.user_id
         WHERE SYS.SYSTABLE.table_name = '#{table}' and SYS.SYSUSER.user_name = '#{user}'
         SQL
-        exec_query(sql) == [[1]]
+        select_value(sql) != 0
       end
 
       def columns(table_name, name = nil) #:nodoc:

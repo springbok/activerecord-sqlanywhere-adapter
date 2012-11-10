@@ -7,17 +7,17 @@
 /home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/bundler-1.2.1/lib/bundler/source.rb:516: warning: method redefined; discarding old revision
 /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:175: warning: assigned but unused variable - result
 /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:341: warning: assigned but unused variable - native
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - col_num
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - ruby_type
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - precision
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - scale
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - max_size
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:591: warning: assigned but unused variable - nullable
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:600: warning: assigned but unused variable - r
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - col_num
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - ruby_type
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - precision
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - scale
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - max_size
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:594: warning: assigned but unused variable - nullable
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:603: warning: assigned but unused variable - r
 /home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
 /home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
 /home/chris/Documents/rails/activerecord/test/cases/bind_parameter_test.rb:31: warning: instance variable @listener not initialized
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:532:in `connect!': [-1, "Failed to initialize connection object"]: Cannot Establish Connection (ActiveRecord::ActiveRecordError)
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:535:in `connect!': [-1, "Failed to initialize connection object"]: Cannot Establish Connection (ActiveRecord::ActiveRecordError)
 	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:142:in `initialize'
 	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:72:in `new'
 	from /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:72:in `sqlanywhere_connection'
