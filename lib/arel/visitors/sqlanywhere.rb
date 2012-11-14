@@ -64,11 +64,11 @@ module Arel
       end
 
       def visit_Arel_Nodes_Offset o
-        "START AT #{visit(o.expr) + 1}"
+        "START AT (#{visit(o.expr) + 1})"
       end
 
       def visit_Arel_Nodes_Limit o
-        "TOP #{visit o.expr}"
+        "TOP (#{visit o.expr})"
       end
       
       def visit_Arel_Nodes_True o
