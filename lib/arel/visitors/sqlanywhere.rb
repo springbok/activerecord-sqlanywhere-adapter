@@ -13,6 +13,55 @@ module Arel
           (visit(o.lock) if o.lock),
         ].compact.join ' '
       end
+      
+      def visit_Arel_Nodes_SelectCore o
+        str = ""
+
+        str << " #{visit(o.top)}" if o.top
+        str << " #{visit(o.set_quantifier)}" if o.set_quantifier
+
+        unless o.projections.empty?
+          str << SPACE
+          len = o.projections.length - 1
+          o.projections.each_with_index do |x, i|
+            str << visit(x)
+            str << COMMA unless len == i
+          end
+        end
+
+        str << " FROM #{visit(o.source)}" if o.source && !o.source.empty?
+
+        unless o.wheres.empty?
+          str << WHERE
+          len = o.wheres.length - 1
+          o.wheres.each_with_index do |x, i|
+            str << visit(x)
+            str << AND unless len == i
+          end
+        end
+
+        unless o.groups.empty?
+          str << GROUP_BY
+          len = o.groups.length - 1
+          o.groups.each_with_index do |x, i|
+            str << visit(x)
+            str << COMMA unless len == i
+          end
+        end
+
+        str << " #{visit(o.having)}" if o.having
+
+        unless o.windows.empty?
+          str << WINDOW
+          len = o.windows.length - 1
+          o.windows.each_with_index do |x, i|
+            str << visit(x)
+            str << COMMA unless len == i
+          end
+        end
+
+        str
+      end
 
       def visit_Arel_Nodes_Offset o
         "START AT #{visit(o.expr) + 1}"
