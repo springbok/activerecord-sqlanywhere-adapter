@@ -27,21 +27,9 @@ The following code is a sample database configuration object.
 
 ==Running the ActiveRecord Unit Test Suite
 
-1. Open <tt><ACTIVERECORD_INSTALL_DIR>/rakefile</tt> and modify the line:
+1. Download https://github.com/ccouzens/rails (sqlanywhere_testing).
 
-      for adapter in %w( mysql postgresql sqlite sqlite3 firebird db2 oracle sybase openbase frontbase )
-
-   to include <tt>sqlanywhere</tt>. It should now look like:
-
-      for adapter in %w( mysql postgresql sqlite sqlite3 firebird db2 oracle sybase openbase frontbase sqlanywhere )
-
-2. Create directory to hold the connection definition:
-   
-      mkdir <ACTIVERECORD_INSTALL_DIR>/test/connections/native_sqlanywhere
-
-3. Copy <tt>test/connection.rb</tt> into the newly created directory.
-
-4. Create the two test databases. These can be created in any directory.
+2. Create the two test databases. These can be created in any directory.
 
       dbinit -c arunit
       dbinit -c arunit2
@@ -49,8 +37,16 @@ The following code is a sample database configuration object.
 
    <b>If the commands cannot be found, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
 
+3. Enter the custom Rails repository.
+
+4. Run bundle with SQLANYWHERE
+
+      SQLANYWHERE=sqlanywhere bundle
+
+5. Enter the activerecord directory.
+
 6. Run the unit test suite from the ActiveRecord install directory:
 
-      rake test_sqlanywhere
+      SQLANYWHERE=sqlanywhere rake test_sqlanywhere
 
    <b>If the migration tests fail, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
