@@ -1,4 +1,5 @@
-=SQL Anywhere ActiveRecord Driver
+SQL Anywhere ActiveRecord Driver
+--------------------------------
 
 This is a SQL Anywhere driver for Ruby ActiveRecord. This driver requires the
 native SQL Anywhere Ruby driver. To get the native driver, use:
@@ -9,10 +10,12 @@ This driver is designed for use with ActiveRecord 3.0.3 and greater.
 
 This driver is licensed under the Apache License, Version 2.
 
-==Making a Connection
+Making a Connection
+-------------------
 
 The following code is a sample database configuration object.
 
+<pre>
   ActiveRecord::Base.configurations = {
     'arunit' => {
       :adapter  => 'sqlanywhere', 
@@ -24,8 +27,10 @@ The following code is a sample database configuration object.
       :commlinks => 'TCPIP()',     #equivalent to the "Commlinks" parameter
       :connection_name => 'Rails'  #equivalent to the "ConnectionName" parameter
   }
+</pre>
 
-==Running the ActiveRecord Unit Test Suite
+Running the ActiveRecord Unit Test Suite
+----------------------------------------
 
 1. Download https://github.com/ccouzens/rails (sqlanywhere_testing).
 
@@ -35,7 +40,7 @@ The following code is a sample database configuration object.
       dbinit -c arunit2
       dbsrv11 arunit arunit2
 
-   <b>If the commands cannot be found, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
+   <b>If the commands cannot be found, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation [here][http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
 
 3. Enter the custom Rails repository.
 
@@ -49,4 +54,4 @@ The following code is a sample database configuration object.
 
       SQLANYWHERE=sqlanywhere rake test_sqlanywhere
 
-   <b>If the migration tests fail, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation here[http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
+   <b>If the migration tests fail, make sure you have set up the SQL Anywhere environment variables correctly.</b> For more information review the online documentation [here][http://dcx.sybase.com/index.php#http%3A%2F%2Fdcx.sybase.com%2F1100en%2Fdbadmin_en11%2Fda-envvar-sect1-3672410.html].
