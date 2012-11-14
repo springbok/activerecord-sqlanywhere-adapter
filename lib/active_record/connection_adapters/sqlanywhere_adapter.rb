@@ -230,6 +230,10 @@ module ActiveRecord
             else
                super(value, column)
             end
+          when TrueClass
+            1
+          when FalseClass
+            0
           else
             super(value, column)
         end
