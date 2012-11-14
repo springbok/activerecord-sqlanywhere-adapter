@@ -1,11 +1,11 @@
 Using sqlanywhere
-Run options: --seed 52359
+Run options: --seed 10994
 
 # Running tests:
 
-..........F........................E...................E.......E...............F......E..E........E.....FFFF..FF......S..........F.................
+..........F........................E...................E.......E...............F......E..........E.....FFFF..FF......S..........F.................
 
-Finished tests in 3.915158s, 37.5464 tests/s, 81.9890 assertions/s.
+Finished tests in 3.552320s, 41.0999 tests/s, 90.3635 assertions/s.
 
   1) Failure:
 test_attribute_names(BasicsTest) [test/cases/base_test.rb:1410]:
@@ -41,13 +41,13 @@ ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, 
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__2229513384958819456__create__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__979502023973471060__create__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__2229513384958819456__save__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__979502023973471060__save__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:76:in `save'
@@ -123,29 +123,6 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     test/cases/base_test.rb:157:in `test_limit_should_allow_sql_literal'
 
   7) Error:
-test_limit_with_comma(BasicsTest):
-ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Syntax error near ',' on line 1: SELECT TOP 1,2   "topics".* FROM "topics" 
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:260:in `sqlanywhere_error'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:255:in `sqlanywhere_error_test'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:556:in `block in exec_query'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
-    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:552:in `exec_query'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:488:in `select'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:63:in `select_all'
-    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:39:in `block in find_by_sql'
-    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
-    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:38:in `find_by_sql'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:568:in `exec_queries'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `block in load'
-    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `load'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:197:in `to_a'
-    test/cases/base_test.rb:128:in `test_limit_with_comma'
-
-  8) Error:
 test_no_limit_offset(BasicsTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Syntax error near 'START' on line 1: SELECT START AT 3  "developers".* FROM "developers" 
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:260:in `sqlanywhere_error'
@@ -170,12 +147,12 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activesupport/lib/active_support/test_case.rb:74:in `assert_nothing_raised'
     test/cases/base_test.rb:1110:in `test_no_limit_offset'
 
-  9) Failure:
+  8) Failure:
 test_preserving_time_objects_with_local_time_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:238]:
 Expected: 2000-01-01 00:00:00 -0500
   Actual: 2000-01-01 00:00:00 UTC
 
- 10) Failure:
+  9) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:278]:
 --- expected
 +++ actual
@@ -184,7 +161,7 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 -0500
 
 
- 11) Failure:
+ 10) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:252]:
 --- expected
 +++ actual
@@ -193,16 +170,16 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 UTC
 
 
- 12) Failure:
+ 11) Failure:
 test_preserving_time_objects_with_utc_time_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:265]:
 Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
- 13) Failure:
+ 12) Failure:
 test_primary_key_with_no_id(BasicsTest) [test/cases/base_test.rb:123]:
 Expected "id" to be nil.
 
- 14) Failure:
+ 13) Failure:
 test_quote(BasicsTest) [test/cases/base_test.rb:972]:
 --- expected
 +++ actual
@@ -213,8 +190,8 @@ test_quote(BasicsTest) [test/cases/base_test.rb:972]:
   \""
 
 
- 15) Failure:
+ 14) Failure:
 test_table_exists(BasicsTest) [test/cases/base_test.rb:168]:
 Failed assertion, no message given.
 
-147 tests, 321 assertions, 9 failures, 6 errors, 1 skips
+146 tests, 321 assertions, 9 failures, 5 errors, 1 skips
