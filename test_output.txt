@@ -1,39 +1,30 @@
 Using sqlanywhere
-Run options: --seed 29380
+Run options: --seed 13928
 
 # Running tests:
 
-..........F........................E...................E.......E...............F.......................FFFF..FF......S..........F.................
+...................................E...................E.......E.......................................FFFF...F......S............................
 
-Finished tests in 3.629307s, 40.2281 tests/s, 88.7222 assertions/s.
+Finished tests in 4.103073s, 35.5831 tests/s, 78.4778 assertions/s.
 
-  1) Failure:
-test_attribute_names(BasicsTest) [test/cases/base_test.rb:1410]:
---- expected
-+++ actual
-@@ -1 +1 @@
--["id", "type", "firm_id", "firm_name", "name", "client_of", "rating", "account_id", "description"]
-+[]
-
-
-  2) Error:
+  1) Error:
 test_column_names_are_escaped(BasicsTest):
 RuntimeError: need a bad char for SQLAnywhereAdapter
     test/cases/base_test.rb:104:in `block in test_column_names_are_escaped'
     test/cases/base_test.rb:103:in `fetch'
     test/cases/base_test.rb:103:in `test_column_names_are_escaped'
 
-  3) Error:
+  2) Error:
 test_dup(BasicsTest):
 ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, FIXNUM, BIGNUM, FLOAT, or NIL: INSERT INTO "topics" ("approved", "author_email_address", "author_name", "bonus_time", "content", "created_at", "last_read", "replies_count", "title", "updated_at", "written_on") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:579:in `set_value'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:579:in `block (2 levels) in exec_query'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:559:in `each'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:559:in `block in exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:562:in `set_value'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:562:in `block (2 levels) in exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:542:in `each'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:542:in `block in exec_query'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
     /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:552:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:535:in `exec_query'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:69:in `exec_insert'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:96:in `insert'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:14:in `insert'
@@ -41,13 +32,13 @@ ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, 
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__565301897999250217__create__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__3378492922825713795__create__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__565301897999250217__save__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__3378492922825713795__save__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:76:in `save'
@@ -65,17 +56,17 @@ ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, 
     /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:258:in `save'
     test/cases/base_test.rb:712:in `test_dup'
 
-  4) Error:
+  3) Error:
 test_find_by_slug(BasicsTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Cannot convert '1-meowmeow' to a numeric: SELECT TOP (1)   "topics".* FROM "topics"  WHERE "topics"."id" = ?
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:260:in `sqlanywhere_error'
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:255:in `sqlanywhere_error_test'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:588:in `block in exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:571:in `block in exec_query'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
     /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:552:in `exec_query'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:488:in `select'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:535:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:471:in `select'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:63:in `select_all'
     /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:39:in `block in find_by_sql'
@@ -95,16 +86,12 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:4:in `find'
     test/cases/base_test.rb:555:in `test_find_by_slug'
 
-  5) Failure:
-test_inspect_class(BasicsTest) [test/cases/base_test.rb:1232]:
-Expected /^Topic\(id: integer, title: string/ to match "Topic(Table doesn't exist)".
-
-  6) Failure:
+  4) Failure:
 test_preserving_time_objects_with_local_time_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:238]:
 Expected: 2000-01-01 00:00:00 -0500
   Actual: 2000-01-01 00:00:00 UTC
 
-  7) Failure:
+  5) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:278]:
 --- expected
 +++ actual
@@ -113,7 +100,7 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 -0500
 
 
-  8) Failure:
+  6) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:252]:
 --- expected
 +++ actual
@@ -122,16 +109,12 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 UTC
 
 
-  9) Failure:
+  7) Failure:
 test_preserving_time_objects_with_utc_time_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:265]:
 Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
- 10) Failure:
-test_primary_key_with_no_id(BasicsTest) [test/cases/base_test.rb:123]:
-Expected "id" to be nil.
-
- 11) Failure:
+  8) Failure:
 test_quote(BasicsTest) [test/cases/base_test.rb:972]:
 --- expected
 +++ actual
@@ -142,8 +125,4 @@ test_quote(BasicsTest) [test/cases/base_test.rb:972]:
   \""
 
 
- 12) Failure:
-test_table_exists(BasicsTest) [test/cases/base_test.rb:168]:
-Failed assertion, no message given.
-
-146 tests, 322 assertions, 9 failures, 3 errors, 1 skips
+146 tests, 322 assertions, 5 failures, 3 errors, 1 skips
