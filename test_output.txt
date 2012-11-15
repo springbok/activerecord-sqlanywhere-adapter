@@ -1,11 +1,11 @@
 Using sqlanywhere
-Run options: --seed 13928
+Run options: --seed 62792
 
 # Running tests:
 
 ...................................E...................E.......E.......................................FFFF...F......S............................
 
-Finished tests in 4.103073s, 35.5831 tests/s, 78.4778 assertions/s.
+Finished tests in 4.072489s, 35.8503 tests/s, 79.0671 assertions/s.
 
   1) Error:
 test_column_names_are_escaped(BasicsTest):
@@ -32,13 +32,13 @@ ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, 
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__3378492922825713795__create__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:354:in `_run__3292881791080364050__create__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__3378492922825713795__save__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:364:in `_run__3292881791080364050__save__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:76:in `save'
@@ -58,7 +58,7 @@ ActiveRecord::StatementInvalid: TypeError: Cannot convert type. Must be STRING, 
 
   3) Error:
 test_find_by_slug(BasicsTest):
-ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Cannot convert '1-meowmeow' to a numeric: SELECT TOP (1)   "topics".* FROM "topics"  WHERE "topics"."id" = ?
+ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Cannot convert '1-meowmeow' to a numeric: SELECT TOP (1)  "topics".* FROM "topics"  WHERE "topics"."id" = ?
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:260:in `sqlanywhere_error'
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:255:in `sqlanywhere_error_test'
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:571:in `block in exec_query'
