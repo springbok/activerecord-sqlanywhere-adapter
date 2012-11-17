@@ -215,6 +215,8 @@ module ActiveRecord
 
       # Applies quotations around column names in generated queries
       def quote_column_name(name) #:nodoc:
+        # Remove backslashes and double quotes from column names
+        name = name.to_s.gsub(/\\|"/, '')
         %Q("#{name}")
       end
 
@@ -230,6 +232,10 @@ module ActiveRecord
             else
                super(value, column)
             end
+          when TrueClass
+            1
+          when FalseClass
+            0
           else
             super(value, column)
         end
@@ -370,24 +376,7 @@ module ActiveRecord
         sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
         exec_query(sql, name).map { |row| row["table_name"] }
       end
-
-      # Does the table exist?
-      # Name can be of the form 'schema_migrations' or 'dba.schema_migrations'.
-      # In the later case it will see if the table exists for the current user.
-      def table_exists?(name)
-        user, table = name.to_s.split('.')
-        if table == nil
-            table = name
-            user = ActiveRecord::Base.connection_config['username']
-        end
-        sql = <<-SQL
-        SELECT COUNT(*)
-        FROM SYS.SYSTABLE JOIN SYS.SYSUSER ON SYS.SYSTABLE.creator = SYS.SYSUSER.user_id
-        WHERE SYS.SYSTABLE.table_name = '#{table}' and SYS.SYSUSER.user_name = '#{user}'
-        SQL
-        select_value(sql) != 0
-      end
-
+      
       def columns(table_name, name = nil) #:nodoc:
         table_structure(table_name).map do |field|
           SQLAnywhereColumn.new(field['name'], field['default'], field['domain'], (field['nulls'] == 1))
