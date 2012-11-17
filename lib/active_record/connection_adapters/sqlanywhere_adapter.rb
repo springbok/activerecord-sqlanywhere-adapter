@@ -551,6 +551,7 @@ SQL
               if bind_value.nil?
                 bind_param.set_value(nil)
               else
+                # perhaps all this ought to be handled in the column class?
                 case bind_type
                 when :datetime
                   bind_param.set_value(bind_value.to_datetime.to_s :db)
@@ -559,6 +560,8 @@ SQL
                 when :decimal
                   bind_param.set_value(bind_value.to_s)
                 when :date
+                  bind_param.set_value(bind_value.to_s)
+                when :time
                   bind_param.set_value(bind_value.to_s)
                 else
                   bind_param.set_value(bind_value)
