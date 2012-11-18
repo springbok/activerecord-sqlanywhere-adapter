@@ -1,23 +1,23 @@
 Using sqlanywhere
-Run options: --seed 56504
+Run options: --seed 40086
 
 # Running tests:
 
 ...............................................................E.......................................FFFF..........S............................
 
-Finished tests in 4.106609s, 35.5524 tests/s, 79.3842 assertions/s.
+Finished tests in 3.860508s, 37.8189 tests/s, 84.4449 assertions/s.
 
   1) Error:
 test_find_by_slug(BasicsTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Cannot convert '1-meowmeow' to a numeric: SELECT TOP (1)  "topics".* FROM "topics"  WHERE "topics"."id" = ?
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:262:in `sqlanywhere_error'
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:257:in `sqlanywhere_error_test'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:576:in `block in exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:537:in `block in exec_query'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
     /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:537:in `exec_query'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:473:in `select'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:498:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:439:in `select'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:63:in `select_all'
     /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:39:in `block in find_by_sql'

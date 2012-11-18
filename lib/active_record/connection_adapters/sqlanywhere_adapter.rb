@@ -281,35 +281,6 @@ module ActiveRecord
             super
         end
       end
-
-      # The database update function.         
-      def update_sql(sql, name = nil)
-        super
-        return @affected_rows
-      end
-
-      # The database delete function.
-      def delete_sql(sql, name = nil) #:nodoc:
-        super
-        return @affected_rows
-      end
-
-      # The database insert function.
-      # ActiveRecord requires that insert_sql returns the primary key of the row just inserted. In most cases, this can be accomplished
-      # by immediatly querying the @@identity property. If the @@identity property is 0, then passed id_value is used
-      def insert_sql(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
-        super
-        
-        retval =  last_inserted_id(nil)
-        retval = id_value if retval == 0
-        return retval
-      end
-      
-      def exec_delete(sql, name = 'SQL', binds = [])
-        exec_query(sql, name, binds)
-        @affected_rows
-      end
-      alias :exec_update :exec_delete
       
       def last_inserted_id(result)
         identity = SA.instance.api.sqlany_execute_direct(@connection, 'SELECT @@identity')
@@ -319,11 +290,6 @@ module ActiveRecord
         SA.instance.api.sqlany_free_stmt(identity)
 
         return retval
-      end
-      
-      # Returns a query as an array of arrays
-      def select_rows(sql, name = nil)
-        exec_query(sql, name).rows
       end
 
       def begin_db_transaction #:nodoc:   
@@ -506,11 +472,6 @@ SQL
           structure = exec_query(sql, :skip_logging).to_hash
           raise(ActiveRecord::StatementInvalid, "Could not find table '#{table_name}'") if structure == false
           structure
-        end
-        
-        # Required to prevent DEFAULT NULL being added to primary keys
-        def options_include_default?(options)
-          options.include?(:default) && !(options[:null] == false && options[:default].nil?)
         end
 
       private
