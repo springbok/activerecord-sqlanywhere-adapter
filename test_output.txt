@@ -1,11 +1,11 @@
 Using sqlanywhere
-Run options: --seed 39409
+Run options: --seed 56504
 
 # Running tests:
 
-...............................................................E.......................................FFFF...F......S............................
+...............................................................E.......................................FFFF..........S............................
 
-Finished tests in 4.151187s, 35.1707 tests/s, 78.5318 assertions/s.
+Finished tests in 4.106609s, 35.5524 tests/s, 79.3842 assertions/s.
 
   1) Error:
 test_find_by_slug(BasicsTest):
@@ -65,15 +65,4 @@ test_preserving_time_objects_with_utc_time_conversion_to_default_timezone_local(
 Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
-  6) Failure:
-test_quote(BasicsTest) [test/cases/base_test.rb:973]:
---- expected
-+++ actual
-@@ -1,3 +1,3 @@
--"\\ \x01 ' 
-+"\\ \u0001 '
-  \
-  \""
-
-
-146 tests, 326 assertions, 5 failures, 1 errors, 1 skips
+146 tests, 326 assertions, 4 failures, 1 errors, 1 skips
