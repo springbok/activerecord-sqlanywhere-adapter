@@ -283,13 +283,7 @@ module ActiveRecord
       end
       
       def last_inserted_id(result)
-        identity = SA.instance.api.sqlany_execute_direct(@connection, 'SELECT @@identity')
-        raise ActiveRecord::StatementInvalid.new("#{SA.instance.api.sqlany_error(@connection)}:#{sql}") if identity.nil?
-        SA.instance.api.sqlany_fetch_next(identity)
-        retval = SA.instance.api.sqlany_get_column(identity, 0)[1]
-        SA.instance.api.sqlany_free_stmt(identity)
-
-        return retval
+        select('SELECT @@IDENTITY').first["@@IDENTITY"]
       end
 
       def begin_db_transaction #:nodoc:   
