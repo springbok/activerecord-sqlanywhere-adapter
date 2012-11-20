@@ -1,48 +1,18 @@
 Using sqlanywhere
-Run options: --seed 46038
+Run options: --seed 25242
 
 # Running tests:
 
-...............................................................E.......................................FFFF..........S............................
+.......................................................................................................FFFF..........S............................
 
-Finished tests in 4.015488s, 36.3592 tests/s, 81.1856 assertions/s.
+Finished tests in 4.271408s, 34.1808 tests/s, 76.5556 assertions/s.
 
-  1) Error:
-test_find_by_slug(BasicsTest):
-ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Cannot convert '1-meowmeow' to a numeric: SELECT TOP (1)  "topics".* FROM "topics"  WHERE "topics"."id" = ?
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:262:in `sqlanywhere_error'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:257:in `sqlanywhere_error_test'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:531:in `block in exec_query'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
-    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:492:in `exec_query'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:433:in `select'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:63:in `select_all'
-    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:39:in `block in find_by_sql'
-    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
-    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:38:in `find_by_sql'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:568:in `exec_queries'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `block in load'
-    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `load'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:197:in `to_a'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation/finder_methods.rb:300:in `find_take'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation/finder_methods.rb:65:in `take'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation/finder_methods.rb:258:in `find_one'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation/finder_methods.rb:244:in `find_with_ids'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation/finder_methods.rb:35:in `find'
-    /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bundler/gems/activerecord-deprecated_finders-dd99c375c44b/lib/active_record/deprecated_finders/relation.rb:123:in `find'
-    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:4:in `find'
-    test/cases/base_test.rb:556:in `test_find_by_slug'
-
-  2) Failure:
+  1) Failure:
 test_preserving_time_objects_with_local_time_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:239]:
 Expected: 2000-01-01 00:00:00 -0500
   Actual: 2000-01-01 00:00:00 UTC
 
-  3) Failure:
+  2) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:279]:
 --- expected
 +++ actual
@@ -51,7 +21,7 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 -0500
 
 
-  4) Failure:
+  3) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:253]:
 --- expected
 +++ actual
@@ -60,9 +30,9 @@ test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_
 +2000-01-01 00:00:00 UTC
 
 
-  5) Failure:
+  4) Failure:
 test_preserving_time_objects_with_utc_time_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:266]:
 Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
-146 tests, 326 assertions, 4 failures, 1 errors, 1 skips
+146 tests, 327 assertions, 4 failures, 0 errors, 1 skips

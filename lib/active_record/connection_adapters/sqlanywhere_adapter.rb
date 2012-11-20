@@ -518,6 +518,8 @@ SQL
                   bind_param.set_value(bind_value.to_s)
                 when :time
                   bind_param.set_value(bind_value.to_s)
+                when :integer
+                  bind_param.set_value(bind_value.to_i)
                 else
                   bind_param.set_value(bind_value)
                 end
