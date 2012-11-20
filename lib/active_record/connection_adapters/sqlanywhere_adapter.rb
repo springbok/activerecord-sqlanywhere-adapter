@@ -508,16 +508,14 @@ SQL
               else
                 # perhaps all this ought to be handled in the column class?
                 case bind_type
-                when :datetime
-                  bind_param.set_value(bind_value.to_datetime.to_s :db)
                 when :boolean
                   bind_param.set_value(bind_value ? 1 : 0)
                 when :decimal
                   bind_param.set_value(bind_value.to_s)
                 when :date
                   bind_param.set_value(bind_value.to_s)
-                when :time
-                  bind_param.set_value(bind_value.to_s)
+                when :datetime, :time
+                  bind_param.set_value(bind_value.to_time.getutc.strftime("%Y-%m-%d %H:%M:%S"))
                 when :integer
                   bind_param.set_value(bind_value.to_i)
                 else

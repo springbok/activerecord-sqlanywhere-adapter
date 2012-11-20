@@ -1,38 +1,24 @@
 Using sqlanywhere
-Run options: --seed 25242
+Run options: --seed 50449
 
 # Running tests:
 
-.......................................................................................................FFFF..........S............................
+........................................................................................................F.F..........S............................
 
-Finished tests in 4.271408s, 34.1808 tests/s, 76.5556 assertions/s.
+Finished tests in 4.095795s, 35.6463 tests/s, 80.8146 assertions/s.
 
   1) Failure:
-test_preserving_time_objects_with_local_time_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:239]:
-Expected: 2000-01-01 00:00:00 -0500
-  Actual: 2000-01-01 00:00:00 UTC
-
-  2) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:279]:
 --- expected
 +++ actual
 @@ -1 +1 @@
 -Sat, 01 Jan 2000 00:00:00 CST -06:00
-+2000-01-01 00:00:00 -0500
++2000-01-01 06:00:00 -0500
 
 
-  3) Failure:
-test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_utc(BasicsTest) [test/cases/base_test.rb:253]:
---- expected
-+++ actual
-@@ -1 +1 @@
--Sat, 01 Jan 2000 00:00:00 CST -06:00
-+2000-01-01 00:00:00 UTC
-
-
-  4) Failure:
+  2) Failure:
 test_preserving_time_objects_with_utc_time_conversion_to_default_timezone_local(BasicsTest) [test/cases/base_test.rb:266]:
 Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
-146 tests, 327 assertions, 4 failures, 0 errors, 1 skips
+146 tests, 331 assertions, 2 failures, 0 errors, 1 skips
