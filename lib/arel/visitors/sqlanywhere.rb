@@ -4,8 +4,12 @@ module Arel
       private
 
       def visit_Arel_Nodes_SelectStatement o
+        using_distinct = o.cores.any? do |core|
+          core.set_quantifier.class == Arel::Nodes::Distinct
+        end
         [
           "SELECT",
+          ("DISTINCT" if using_distinct),
           (visit(o.limit) if o.limit),
           (visit(Arel::Nodes::Limit.new(2147483647)) if o.limit == nil and o.offset),
           (visit(o.offset) if o.offset),
@@ -16,7 +20,7 @@ module Arel
       end
       
       def visit_Arel_Nodes_SelectCore o
-        super.sub('SELECT ', '')
+        super.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
       end
 
       def visit_Arel_Nodes_Offset o
