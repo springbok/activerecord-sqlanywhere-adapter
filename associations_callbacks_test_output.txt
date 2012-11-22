@@ -1,44 +1,10 @@
 Using sqlanywhere
-Run options: --seed 34496
+Run options: --seed 55376
 
 # Running tests:
 
-.............EE
+...............
 
-Finished tests in 1.474414s, 10.1735 tests/s, 33.9118 assertions/s.
+Finished tests in 1.595010s, 9.4043 tests/s, 33.8556 assertions/s.
 
-  1) Error:
-test_removing_with_macro_callbacks(AssociationCallbacksTest):
-NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x000000024e2a58>
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:124:in `delete_records'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:479:in `remove_records'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `block in delete_or_destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:140:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:209:in `within_new_transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:208:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:139:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `delete_or_destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:223:in `delete'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:564:in `delete'
-    test/cases/associations/callbacks_test.rb:36:in `test_removing_with_macro_callbacks'
-
-  2) Error:
-test_removing_with_proc_callbacks(AssociationCallbacksTest):
-NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000002666820>
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:124:in `delete_records'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:479:in `remove_records'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `block in delete_or_destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:140:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:209:in `within_new_transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:208:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:139:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `delete_or_destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:223:in `delete'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:564:in `delete'
-    test/cases/associations/callbacks_test.rb:45:in `test_removing_with_proc_callbacks'
-
-15 tests, 50 assertions, 0 failures, 2 errors, 0 skips
+15 tests, 54 assertions, 0 failures, 0 errors, 0 skips

@@ -254,7 +254,8 @@ module ActiveRecord
 
         else
           log(sql, name) { execute(sql, :skip_logging) }
-        end        
+        end
+        @affected_rows
       end
       
       def sqlanywhere_error_test(sql = '')
@@ -578,6 +579,7 @@ SQL
         exec_query(sql, name, binds)
         @affected_rows
       end
+      alias :exec_update :exec_delete
 
         # convert sqlany type to ruby type
         # the types are taken from here
