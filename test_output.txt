@@ -1,16 +1,10 @@
 Using sqlanywhere
-Run options: --seed 13064
+Run options: --seed 48126
 
 # Running tests:
 
-....................E
+.....................
 
-Finished tests in 3.899444s, 5.3854 tests/s, 13.0788 assertions/s.
+Finished tests in 3.630780s, 5.7839 tests/s, 14.3220 assertions/s.
 
-  1) Error:
-test_keeping_default_and_notnull_constaint_on_change(ActiveRecord::Migration::ChangeSchemaTest):
-NoMethodError: undefined method `select_rows' for #<ActiveRecord::ConnectionAdapters::SQLAnywhereAdapter:0x0000000259abf8>
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:44:in `select_values'
-    test/cases/migration/change_schema_test.rb:287:in `test_keeping_default_and_notnull_constaint_on_change'
-
-21 tests, 51 assertions, 0 failures, 1 errors, 0 skips
+21 tests, 52 assertions, 0 failures, 0 errors, 0 skips
