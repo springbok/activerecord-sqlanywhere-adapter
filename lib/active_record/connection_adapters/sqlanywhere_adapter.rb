@@ -210,6 +210,10 @@ module ActiveRecord
           :boolean     => { :name => "tinyint", :limit => 1}
         }
       end
+      
+      def select_rows(sql, name = nil)
+        exec_query(sql, name).rows
+      end
 
       # QUOTING ==================================================
 
