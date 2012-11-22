@@ -238,11 +238,24 @@ module ActiveRecord
       # The database execution function
       def execute(sql, name = nil) #:nodoc:
         if name == :skip_logging
-          r = SA.instance.api.sqlany_execute_immediate(@connection, sql)
-          sqlanywhere_error_test(sql) if r==0
+          begin
+            stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+            sqlanywhere_error_test(sql) if stmt==nil
+            r = SA.instance.api.sqlany_execute(stmt)
+            sqlanywhere_error_test(sql) if r==0
+            @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
+            sqlanywhere_error_test(sql) if @affected_rows==-1
+          rescue StandardError => e
+            @affected_rows = 0
+            raise e
+          ensure
+            SA.instance.api.sqlany_free_stmt(stmt)
+          end
+
         else
           log(sql, name) { execute(sql, :skip_logging) }
-        end        
+        end
+        @affected_rows
       end
       
       def sqlanywhere_error_test(sql = '')
@@ -482,13 +495,12 @@ SQL
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 		
-        def exec_query(sql, name = nil, binds = [])
-          log(sql, name, binds) do
-            stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-            
-            if stmt.nil?
-              sqlanywhere_error_test(sql)
-            end
+      def exec_query(sql, name = nil, binds = [])
+        log(sql, name, binds) do
+          stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+          sqlanywhere_error_test(sql) if stmt==nil
+          
+          begin
             
             for i in 0...binds.length
               bind_type = binds[i][0].type
@@ -546,15 +558,28 @@ SQL
               end
               rows << row
             end
+            @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
+            sqlanywhere_error_test(sql) if @affected_rows==-1
+          rescue StandardError => e
+            @affected_rows = 0
+            raise e
+          ensure
             SA.instance.api.sqlany_free_stmt(stmt)
-            
-            if @auto_commit
-              result = SA.instance.api.sqlany_commit(@connection)
-              sqlanywhere_error_test(sql) if result==0
-            end
-            return ActiveRecord::Result.new(fields, rows)
           end
+          
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
+          return ActiveRecord::Result.new(fields, rows)
         end
+      end
+        
+      def exec_delete(sql, name = 'SQL', binds = [])
+        exec_query(sql, name, binds)
+        @affected_rows
+      end
+      alias :exec_update :exec_delete
 
         # convert sqlany type to ruby type
         # the types are taken from here
