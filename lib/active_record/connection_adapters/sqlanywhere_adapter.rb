@@ -142,16 +142,6 @@ module ActiveRecord
         connect!
       end
       
-      def self.visitor_for(pool)
-        config = pool.spec.config
-        
-        if config.fetch(:prepared_statements) {true}
-          Arel::Visitors::SQLAnywhere.new pool
-        else
-          BindSubstitution.new pool
-        end
-      end
-
       def adapter_name #:nodoc:
         'SQLAnywhere'
       end
