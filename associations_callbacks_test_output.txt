@@ -1,36 +1,15 @@
 Using sqlanywhere
-Run options: --seed 20313
+Run options: --seed 34496
 
 # Running tests:
 
-........E....EE
+.............EE
 
-Finished tests in 1.501764s, 9.9883 tests/s, 32.6283 assertions/s.
+Finished tests in 1.474414s, 10.1735 tests/s, 33.9118 assertions/s.
 
   1) Error:
-test_has_many_callbacks_for_destroy_on_parent(AssociationCallbacksTest):
-NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000002785530>
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:122:in `delete_records'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:219:in `delete'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:148:in `delete_all'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:28:in `handle_dependency'
-    /home/chris/Documents/rails/activerecord/lib/active_record/associations/builder/association.rb:95:in `has_many_dependent_for_exclusively_dependent_clients_of_firm'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:368:in `_run__1275427336550497845__destroy__callbacks'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
-    /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:289:in `destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:254:in `block in destroy'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:312:in `block in with_transaction_returning_status'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:209:in `within_new_transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:208:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:309:in `with_transaction_returning_status'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:254:in `destroy'
-    test/cases/associations/callbacks_test.rb:88:in `test_has_many_callbacks_for_destroy_on_parent'
-
-  2) Error:
 test_removing_with_macro_callbacks(AssociationCallbacksTest):
-NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000002cdfa58>
+NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x000000024e2a58>
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:124:in `delete_records'
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:479:in `remove_records'
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `block in delete_or_destroy'
@@ -45,9 +24,9 @@ NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000002cdfa58
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:564:in `delete'
     test/cases/associations/callbacks_test.rb:36:in `test_removing_with_macro_callbacks'
 
-  3) Error:
+  2) Error:
 test_removing_with_proc_callbacks(AssociationCallbacksTest):
-NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000003297568>
+NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000002666820>
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/has_many_association.rb:124:in `delete_records'
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:479:in `remove_records'
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_association.rb:472:in `block in delete_or_destroy'
@@ -62,4 +41,4 @@ NoMethodError: undefined method `-@' for #<ActiveRecord::Result:0x00000003297568
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:564:in `delete'
     test/cases/associations/callbacks_test.rb:45:in `test_removing_with_proc_callbacks'
 
-15 tests, 49 assertions, 0 failures, 3 errors, 0 skips
+15 tests, 50 assertions, 0 failures, 2 errors, 0 skips
