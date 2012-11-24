@@ -28,10 +28,27 @@ require 'arel/visitors/sqlanywhere.rb'
 # Singleton class to hold a valid instance of the SQLAnywhereInterface across all connections
 class SA
   include Singleton
-  attr_accessor :api
+  def api
+    if @pid != Process.pid
+      reset_api
+    end
+    @api
+  end
 
   def initialize
+    @api = nil
+    @pid = nil
     require 'sqlanywhere' unless defined? SQLAnywhere
+    reset_api
+  end
+
+  private
+  def reset_api
+    @pid = Process.pid
+    if @api != nil
+      @api.sqlany_fini()
+      SQLAnywhere::API.sqlany_finalize_interface( @api )
+    end
     @api = SQLAnywhere::SQLAnywhereInterface.new()
     raise LoadError, "Could not load SQLAnywhere DBCAPI library" if SQLAnywhere::API.sqlany_initialize_interface(@api) == 0 
     raise LoadError, "Could not initialize SQLAnywhere DBCAPI library" if @api.sqlany_init() == 0 
