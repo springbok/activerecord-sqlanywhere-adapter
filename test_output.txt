@@ -1,11 +1,11 @@
 Using sqlanywhere
-Run options: --seed 50754
+Run options: --seed 26901
 
 # Running tests:
 
 .............SSS...............................................................SSSS...................................................................................................................................................S..SSSSSSS.....................................S.....................................................S................................................................SSSSSS............................................................................................................................................................................................................................................................................................................................................................................................................................................................................F.F..........S..........................................................................................................F.F.....F.............F..................................................................................................................................................................................................................F..................................................................................................................................F...............................................F.F...................................F.F...................F..................................................................F.....E...................................................F......................................F...............................................................................................E.........................E..................................................................................F..............................................................................................................................F...F..................................................................................................................................................................................................................................................................................................................................................................F.S......S.S..................................................E.......................................................................FF....................................................................................................................................F...........................................................................F..................................................................................................................................................................................................................................................E........E.E..............................................................................................................................................................................................................................................................................................................................................................................................................SSSSSS...........................................E....................................
 
-Finished tests in 357.632278s, 9.4846 tests/s, 27.0278 assertions/s.
+Finished tests in 350.813642s, 9.6690 tests/s, 27.5531 assertions/s.
 
   1) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [/home/chris/Documents/rails/activerecord/test/cases/base_test.rb:279]:
@@ -40,7 +40,7 @@ Expected: [50, 53, 55, 60]
 
   7) Failure:
 test_should_serialize_datetime_with_timezone_reloaded(DefaultXmlSerializationTimezoneTest) [/home/chris/Documents/rails/activerecord/test/cases/xml_serialization_test.rb:176]:
-Expected /<updated-at type=\"dateTime\">2006-07-31T17:00:00-07:00<\/updated-at>/ to match "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<toy>\n  <toy-id type=\"integer\">3</toy-id>\n  <name>Minnie</name>\n  <pet-id type=\"integer\" nil=\"true\"/>\n  <integer type=\"integer\" nil=\"true\"/>\n  <created-at type=\"dateTime\">2012-11-25T10:05:35-08:00</created-at>\n  <updated-at type=\"dateTime\">2006-07-31T16:00:00-07:00</updated-at>\n</toy>\n".
+Expected /<updated-at type=\"dateTime\">2006-07-31T17:00:00-07:00<\/updated-at>/ to match "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<toy>\n  <toy-id type=\"integer\">3</toy-id>\n  <name>Minnie</name>\n  <pet-id type=\"integer\" nil=\"true\"/>\n  <integer type=\"integer\" nil=\"true\"/>\n  <created-at type=\"dateTime\">2012-11-25T13:28:45-08:00</created-at>\n  <updated-at type=\"dateTime\">2006-07-31T16:00:00-07:00</updated-at>\n</toy>\n".
 
   8) Failure:
 test_count_eager_with_has_many_and_limit_and_high_offset(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:579]:
@@ -200,7 +200,7 @@ test_transactions_when_replacing_on_persisted(HasManyAssociationsTest) [/home/ch
 
  23) Failure:
 test_add_table_with_decimals(MigrationTest) [/home/chris/Documents/rails/activerecord/test/cases/migration_test.rb:166]:
-Expected #<BigDecimal:b64dce0,'0.2718282E1',18(18)> to be a kind of Fixnum, not BigDecimal.
+Expected #<BigDecimal:a073b68,'0.2718282E1',18(18)> to be a kind of Fixnum, not BigDecimal.
 
  24) Error:
 test_associations_should_work_when_model_has_no_connection(MultipleDbTest):
@@ -334,13 +334,13 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__592644913770747832__create__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__3840860472491896796__create__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__592644913770747832__save__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__3840860472491896796__save__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:76:in `save'

@@ -1,0 +1,67 @@
+Using sqlanywhere
+Run options: --seed 16808
+
+# Running tests:
+
+.............................................................................................................................................................E........E.E..
+
+Finished tests in 4.324400s, 39.5431 tests/s, 107.0669 assertions/s.
+
+  1) Error:
+test_size_with_zero_limit(RelationTest):
+ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Statement's size limit is invalid: SELECT TOP (0) "posts".* FROM "posts" 
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:281:in `sqlanywhere_error_test'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:533:in `block in exec_query'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
+    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:531:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:462:in `select'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:24:in `select_all'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:63:in `select_all'
+    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:39:in `block in find_by_sql'
+    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
+    /home/chris/Documents/rails/activerecord/lib/active_record/querying.rb:38:in `find_by_sql'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:568:in `exec_queries'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `block in load'
+    /home/chris/Documents/rails/activerecord/lib/active_record/explain.rb:35:in `logging_query_plan'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:459:in `load'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:197:in `to_a'
+    test/cases/relations_test.rb:816:in `test_size_with_zero_limit'
+
+  2) Error:
+test_update_all_with_joins_and_limit(RelationTest):
+ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: The result returned is non-deterministic: UPDATE "comments" SET "post_id" = 2 WHERE "comments"."id" IN (SELECT TOP (1) "comments"."id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "posts"."id" = 1)
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:281:in `sqlanywhere_error_test'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:569:in `block in exec_query'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
+    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:531:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:611:in `exec_delete'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:102:in `update'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:14:in `update'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:287:in `update_all'
+    /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bundler/gems/activerecord-deprecated_finders-dd99c375c44b/lib/active_record/deprecated_finders/relation.rb:55:in `update_all_with_deprecated_options'
+    test/cases/relations_test.rb:1214:in `test_update_all_with_joins_and_limit'
+
+  3) Error:
+test_update_all_with_joins_and_offset(RelationTest):
+ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: The result returned is non-deterministic: UPDATE "comments" SET "post_id" = 2 WHERE "comments"."id" IN (SELECT TOP (2147483647) START AT (2) "comments"."id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "posts"."id" = 1)
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:281:in `sqlanywhere_error_test'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:569:in `block in exec_query'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
+    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:531:in `exec_query'
+    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:611:in `exec_delete'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:102:in `update'
+    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:14:in `update'
+    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:287:in `update_all'
+    /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bundler/gems/activerecord-deprecated_finders-dd99c375c44b/lib/active_record/deprecated_finders/relation.rb:55:in `update_all_with_deprecated_options'
+    test/cases/relations_test.rb:1229:in `test_update_all_with_joins_and_offset'
+
+171 tests, 463 assertions, 0 failures, 3 errors, 0 skips
