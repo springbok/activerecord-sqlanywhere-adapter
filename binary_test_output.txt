@@ -1,51 +1,10 @@
 Using sqlanywhere
-Run options: --seed 12132
+Run options: --seed 65338
 
 # Running tests:
 
-E.
+..
 
-Finished tests in 0.061765s, 32.3806 tests/s, 48.5708 assertions/s.
+Finished tests in 0.085316s, 23.4424 tests/s, 128.9329 assertions/s.
 
-  1) Error:
-test_load_save(BinaryTest):
-ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Right truncation of string data: INSERT INTO "binaries" ("data") VALUES (?)
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:281:in `sqlanywhere_error_test'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:564:in `block in exec_query'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:305:in `block in log'
-    /home/chris/Documents/rails/activesupport/lib/active_support/notifications/instrumenter.rb:20:in `instrument'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract_adapter.rb:300:in `log'
-    /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:526:in `exec_query'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:69:in `exec_insert'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:96:in `insert'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb:14:in `insert'
-    /home/chris/Documents/rails/activerecord/lib/active_record/relation.rb:68:in `insert'
-    /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
-    /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
-    /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__1021972084011463609__create__callbacks'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
-    /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
-    /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
-    /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
-    /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__1021972084011463609__save__callbacks'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
-    /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
-    /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:96:in `save!'
-    /home/chris/Documents/rails/activerecord/lib/active_record/validations.rb:57:in `save!'
-    /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:42:in `save!'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:264:in `block in save!'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:312:in `block in with_transaction_returning_status'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `block in transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:209:in `within_new_transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/connection_adapters/abstract/database_statements.rb:201:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:208:in `transaction'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:309:in `with_transaction_returning_status'
-    /home/chris/Documents/rails/activerecord/lib/active_record/transactions.rb:264:in `save!'
-    test/cases/binary_test.rb:42:in `block in test_load_save'
-    test/cases/binary_test.rb:34:in `each'
-    test/cases/binary_test.rb:34:in `test_load_save'
-
-2 tests, 3 assertions, 0 failures, 1 errors, 0 skips
+2 tests, 11 assertions, 0 failures, 0 errors, 0 skips
