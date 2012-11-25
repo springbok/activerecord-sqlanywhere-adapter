@@ -488,6 +488,14 @@ WHERE
   table_name = '#{table_name}'
 SQL
           structure = exec_query(sql, :skip_logging).to_hash
+
+          structure.map do |column|
+            if String === column["default"]
+              # escape the hexadecimal characters
+              column["default"].gsub!(/\\x\h./) {|h| h[2,3].hex.chr}
+            end
+            column
+          end
           raise(ActiveRecord::StatementInvalid, "Could not find table '#{table_name}'") if structure == false
           structure
         end
