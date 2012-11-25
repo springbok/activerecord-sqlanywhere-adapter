@@ -491,8 +491,10 @@ SQL
 
           structure.map do |column|
             if String === column["default"]
-              # escape the hexadecimal characters
-              column["default"].gsub!(/\\x\h./) {|h| h[2,3].hex.chr}
+              # Escape the hexadecimal characters.
+              # For example, a column default with a new line might look like 'foo\x0Abar'.
+              # After the gsub it will look like 'foo\nbar'.
+              column["default"].gsub!(/\\x(\h{2})/) {$1.hex.chr}
             end
             column
           end

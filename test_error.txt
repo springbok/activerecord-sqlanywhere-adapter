@@ -3,13 +3,13 @@
 /home/chris/.rvm/gems/ruby-1.9.3-p286@global/gems/bundler-1.2.1/lib/bundler/source.rb:516: warning: method redefined; discarding old revision
 /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:182: warning: assigned but unused variable - result
 /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:331: warning: assigned but unused variable - native
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - col_num
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - ruby_type
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - precision
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - scale
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - max_size
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:572: warning: assigned but unused variable - nullable
-/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:581: warning: assigned but unused variable - r
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - col_num
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - ruby_type
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - precision
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - scale
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - max_size
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:574: warning: assigned but unused variable - nullable
+/home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:583: warning: assigned but unused variable - r
 rake aborted!
 Command failed with status (1): [/home/chris/.rvm/rubies/ruby-1.9.3-p286/bi...]
 
