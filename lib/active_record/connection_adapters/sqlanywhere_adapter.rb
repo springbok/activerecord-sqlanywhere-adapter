@@ -332,22 +332,27 @@ module ActiveRecord
           if type == :integer
             case limit
               when 1
-                column_type_sql = 'tinyint'
+                'tinyint'
               when 2
-                column_type_sql = 'smallint'  
+                'smallint'
               when 3..4
-                column_type_sql = 'integer'
+                'integer'
               when 5..8
-                column_type_sql = 'bigint'
+                'bigint'
               else
-                column_type_sql = 'integer'
+                'integer'
             end
-               column_type_sql
           elsif type == :string and !limit.nil?
              "varchar (#{limit})"
           elsif type == :boolean
-            column_type_sql = 'tinyint'
-          else 
+            'tinyint'
+          elsif type == :binary
+            if limit
+              "binary (#{limit})"
+            else
+              "long binary"
+            end
+          else
             super(type, limit, precision, scale)
           end
         else
