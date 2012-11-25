@@ -7,6 +7,16 @@ module Arel
         using_distinct = o.cores.any? do |core|
           core.set_quantifier.class == Arel::Nodes::Distinct
         end
+        if o.limit and o.limit.expr == 0
+          o = o.dup
+          o.limit = nil
+          o.cores.map! do |core|
+            core = core.dup
+            core.wheres << Arel::Nodes::False.new
+            core
+          end
+        end
+        
         [
           "SELECT",
           ("DISTINCT" if using_distinct),
