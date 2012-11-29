@@ -1,11 +1,11 @@
 Using sqlanywhere
-Run options: --seed 14327
+Run options: --seed 56228
 
 # Running tests:
 
-.............SSS...............................................................SSSS...................................................................................................................................................S..SSSSSSS.....................................S.....................................................S................................................................SSSSSS............................................................................................................................................................................................................................................................................................................................................................................................................................................................................F.F..........S..........................................................................................................F.F.....F.............F..................................................................................................................................................................................................................F..................................................................................................................................F...............................................F.F...................................F.F...................F..................................................................F.........................................................F......................................F...............................................................................................E.........................E..................................................................................F..............................................................................................................................F...F..................................................................................................................................................................................................................................................................................................................................................................F.S......S.S..................................................E.......................................................................FF....................................................................................................................................F...........................................................................F...........................................................................................................................................................................................................................................................E.E..............................................................................................................................................................................................................................................................................................................................................................................................................SSSSSS...........................................E....................................
+.............SSS...............................................................SSSS...................................................................................................................................................S..SSSSSSS.....................................S.....................................................S................................................................SSSSSS............................................................................................................................................................................................................................................................................................................................................................................................................................................................................F.F..........S................................................................................................................................F..................................................................................................................................................................................................................F..................................................................................................................................F...............................................F.F...................................F.F...................F..................................................................F.........................................................F......................................F...............................................................................................E.........................E..................................................................................F..............................................................................................................................F...F..................................................................................................................................................................................................................................................................................................................................................................F.S......S.S..................................................E.......................................................................FF....................................................................................................................................F...........................................................................F...........................................................................................................................................................................................................................................................E.E..............................................................................................................................................................................................................................................................................................................................................................................................................SSSSSS...........................................E....................................
 
-Finished tests in 351.679695s, 9.6451 tests/s, 27.4966 assertions/s.
+Finished tests in 347.890028s, 9.7502 tests/s, 27.8019 assertions/s.
 
   1) Failure:
 test_preserving_time_objects_with_time_with_zone_conversion_to_default_timezone_local(BasicsTest) [/home/chris/Documents/rails/activerecord/test/cases/base_test.rb:279]:
@@ -22,42 +22,30 @@ Expected: 2000-01-01 00:00:00 UTC
   Actual: 2000-01-01 00:00:00 -0500
 
   3) Failure:
-test_limit_is_kept(CalculationsTest) [/home/chris/Documents/rails/activerecord/test/cases/calculations_test.rb:137]:
-Expected /LIMIT/ to match "SELECT COUNT(count_column) FROM (SELECT TOP (1) 1 AS count_column FROM \"accounts\" ) subquery_for_count ".
-
-  4) Failure:
-test_limit_with_offset_is_kept(CalculationsTest) [/home/chris/Documents/rails/activerecord/test/cases/calculations_test.rb:153]:
-Expected /LIMIT/ to match "SELECT COUNT(count_column) FROM (SELECT TOP (1) START AT (2) 1 AS count_column FROM \"accounts\" ) subquery_for_count ".
-
-  5) Failure:
-test_offset_is_kept(CalculationsTest) [/home/chris/Documents/rails/activerecord/test/cases/calculations_test.rb:145]:
-Expected /OFFSET/ to match "SELECT COUNT(count_column) FROM (SELECT TOP (2147483647) START AT (2) 1 AS count_column FROM \"accounts\" ) subquery_for_count ".
-
-  6) Failure:
 test_pluck_with_selection_clause(CalculationsTest) [/home/chris/Documents/rails/activerecord/test/cases/calculations_test.rb:532]:
 Expected: [50, 53, 55, 60]
   Actual: [50, 50, 50, 53, 55, 60]
 
-  7) Failure:
+  4) Failure:
 test_should_serialize_datetime_with_timezone_reloaded(DefaultXmlSerializationTimezoneTest) [/home/chris/Documents/rails/activerecord/test/cases/xml_serialization_test.rb:176]:
-Expected /<updated-at type=\"dateTime\">2006-07-31T17:00:00-07:00<\/updated-at>/ to match "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<toy>\n  <toy-id type=\"integer\">3</toy-id>\n  <name>Minnie</name>\n  <pet-id type=\"integer\" nil=\"true\"/>\n  <integer type=\"integer\" nil=\"true\"/>\n  <created-at type=\"dateTime\">2012-11-25T13:36:46-08:00</created-at>\n  <updated-at type=\"dateTime\">2006-07-31T16:00:00-07:00</updated-at>\n</toy>\n".
+Expected /<updated-at type=\"dateTime\">2006-07-31T17:00:00-07:00<\/updated-at>/ to match "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<toy>\n  <toy-id type=\"integer\">3</toy-id>\n  <name>Minnie</name>\n  <pet-id type=\"integer\" nil=\"true\"/>\n  <integer type=\"integer\" nil=\"true\"/>\n  <created-at type=\"dateTime\">2012-11-29T14:28:43-08:00</created-at>\n  <updated-at type=\"dateTime\">2006-07-31T16:00:00-07:00</updated-at>\n</toy>\n".
 
-  8) Failure:
+  5) Failure:
 test_count_eager_with_has_many_and_limit_and_high_offset(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:579]:
 Expected: 0
   Actual: 1
 
-  9) Failure:
+  6) Failure:
 test_eager_with_has_many_and_limit_and_conditions_array_on_the_eagers(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:547]:
 Expected: 2
   Actual: 1
 
- 10) Failure:
+  7) Failure:
 test_eager_with_has_many_and_limit_and_high_offset(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:557]:
 Expected: 0
   Actual: 1
 
- 11) Failure:
+  8) Failure:
 test_limited_eager_with_multiple_order_columns(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:798]:
 --- expected
 +++ actual
@@ -66,7 +54,7 @@ test_limited_eager_with_multiple_order_columns(EagerAssociationTest) [/home/chri
 +[#<Post id: 1, author_id: 1, title: "Welcome to the weblog", body: "Such a lovely day", type: "Post", comments_count: 2, taggings_count: 1, taggings_with_delete_all_count: 0, taggings_with_destroy_count: 0, tags_count: 1, tags_with_destroy_count: 0, tags_with_nullify_count: 0>, #<StiPost id: 5, author_id: 1, title: "sti me", body: "hello", type: "StiPost", comments_count: 0, taggings_count: 0, taggings_with_delete_all_count: 0, taggings_with_destroy_count: 0, tags_count: 0, tags_with_destroy_count: 0, tags_with_nullify_count: 0>]
 
 
- 12) Failure:
+  9) Failure:
 test_limited_eager_with_order(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:781]:
 --- expected
 +++ actual
@@ -75,29 +63,29 @@ test_limited_eager_with_order(EagerAssociationTest) [/home/chris/Documents/rails
 +[#<Post id: 1, author_id: 1, title: "Welcome to the weblog", body: "Such a lovely day", type: "Post", comments_count: 2, taggings_count: 1, taggings_with_delete_all_count: 0, taggings_with_destroy_count: 0, tags_count: 1, tags_with_destroy_count: 0, tags_with_nullify_count: 0>, #<StiPost id: 5, author_id: 1, title: "sti me", body: "hello", type: "StiPost", comments_count: 0, taggings_count: 0, taggings_with_delete_all_count: 0, taggings_with_destroy_count: 0, tags_count: 0, tags_with_destroy_count: 0, tags_with_nullify_count: 0>]
 
 
- 13) Failure:
+ 10) Failure:
 test_order_on_join_table_with_include_and_limit(EagerAssociationTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/eager_test.rb:948]:
 Expected: 5
   Actual: 4
 
- 14) Failure:
+ 11) Failure:
 test_exists_does_not_select_columns_without_alias(FinderTest) [/home/chris/Documents/rails/activerecord/test/cases/finder_test.rb:49]:
 Query pattern(s) /SELECT\W+1 AS one FROM ["`]topics["`]/i not found.
 Queries:
 SELECT TOP (1) 1 AS one FROM "topics" 
 
- 15) Failure:
+ 12) Failure:
 test_find_with_order_on_included_associations_with_construct_finder_sql_for_association_limiting_and_is_distinct(FinderTest) [/home/chris/Documents/rails/activerecord/test/cases/finder_test.rb:776]:
 Expected: 2
   Actual: 1
 
- 16) Failure:
+ 13) Failure:
 test_take_and_first_and_last_with_integer_should_use_sql_limit(FinderTest) [/home/chris/Documents/rails/activerecord/test/cases/finder_test.rb:241]:
 Query pattern(s) /LIMIT 3|ROWNUM <= 3/ not found.
 Queries:
 SELECT TOP (3) "topics".* FROM "topics" 
 
- 17) Error:
+ 14) Error:
 test_count_with_finder_sql(HasAndBelongsToManyAssociationsTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Function or column reference to 'id' in the ORDER BY clause is invalid: SELECT COUNT(*) FROM developers_projects j, developers t WHERE t.id = j.developer_id AND j.project_id = 1 ORDER BY t.id
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
@@ -119,7 +107,7 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:671:in `count'
     /home/chris/Documents/rails/activerecord/test/cases/associations/has_and_belongs_to_many_associations_test.rb:810:in `test_count_with_finder_sql'
 
- 18) Error:
+ 15) Error:
 test_find_scoped_grouped_having(HasAndBelongsToManyAssociationsTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Invalid expression near 'SUM': SELECT SUM(salary) as salary FROM "developers" INNER JOIN "developers_projects" ON "developers"."id" = "developers_projects"."developer_id" WHERE "developers_projects"."project_id" = ? GROUP BY developers.salary HAVING SUM(salary) > 10000
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
@@ -146,13 +134,13 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/associations/collection_proxy.rb:695:in `size'
     /home/chris/Documents/rails/activerecord/test/cases/associations/has_and_belongs_to_many_associations_test.rb:710:in `test_find_scoped_grouped_having'
 
- 19) Failure:
+ 16) Failure:
 test_clearing_updates_counter_cache_when_inverse_counter_cache_is_a_symbol_with_dependent_destroy(HasManyAssociationsTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/has_many_associations_test.rb:847]:
 "car.reload.engines_count" didn't change by -1.
 Expected: 0
   Actual: -1
 
- 20) Failure:
+ 17) Failure:
 test_transaction_when_deleting_persisted(HasManyAssociationsTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/has_many_associations_test.rb:806]:
 --- expected
 +++ actual
@@ -161,7 +149,7 @@ test_transaction_when_deleting_persisted(HasManyAssociationsTest) [/home/chris/D
 +#<ActiveRecord::Associations::CollectionProxy [#<Client id: 110, type: "Client", firm_id: nil, firm_name: nil, name: "Bad", client_of: 1, rating: 1, account_id: nil, description: "">]>
 
 
- 21) Failure:
+ 18) Failure:
 test_transactions_when_replacing_on_persisted(HasManyAssociationsTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/has_many_associations_test.rb:1210]:
 --- expected
 +++ actual
@@ -170,11 +158,11 @@ test_transactions_when_replacing_on_persisted(HasManyAssociationsTest) [/home/ch
 +#<ActiveRecord::Associations::CollectionProxy []>
 
 
- 22) Failure:
+ 19) Failure:
 test_add_table_with_decimals(MigrationTest) [/home/chris/Documents/rails/activerecord/test/cases/migration_test.rb:166]:
-Expected #<BigDecimal:a4d09b8,'0.2718282E1',18(18)> to be a kind of Fixnum, not BigDecimal.
+Expected #<BigDecimal:b4456f0,'0.2718282E1',18(18)> to be a kind of Fixnum, not BigDecimal.
 
- 23) Error:
+ 20) Error:
 test_associations_should_work_when_model_has_no_connection(MultipleDbTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionNotEstablished: ActiveRecord::ConnectionNotEstablished: SELECT TOP (1) "colleges".* FROM "colleges"  ORDER BY "colleges"."id" ASC
     /home/chris/Documents/rails/activerecord/lib/active_record/connection_handling.rb:75:in `connection_pool'
@@ -206,7 +194,7 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionNotEstablished: ActiveRe
     /home/chris/Documents/rails/activesupport/lib/active_support/test_case.rb:74:in `assert_nothing_raised'
     /home/chris/Documents/rails/activerecord/test/cases/multiple_db_test.rb:100:in `test_associations_should_work_when_model_has_no_connection'
 
- 24) Failure:
+ 21) Failure:
 test_distinct_has_many_through_a_has_many_through_association_on_source_reflection(NestedThroughAssociationsTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/nested_through_associations_test.rb:388]:
 --- expected
 +++ actual
@@ -215,7 +203,7 @@ test_distinct_has_many_through_a_has_many_through_association_on_source_reflecti
 +#<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "General", taggings_count: 0>, #<Tag id: 1, name: "General", taggings_count: 0>]>
 
 
- 25) Failure:
+ 22) Failure:
 test_distinct_has_many_through_a_has_many_through_association_on_through_reflection(NestedThroughAssociationsTest) [/home/chris/Documents/rails/activerecord/test/cases/associations/nested_through_associations_test.rb:393]:
 --- expected
 +++ actual
@@ -224,15 +212,15 @@ test_distinct_has_many_through_a_has_many_through_association_on_through_reflect
 +#<ActiveRecord::Relation [#<Subscriber nick: "alterself", name: "Luke Holden", books_count: 0>, #<Subscriber nick: "webster132", name: "David Heinemeier Hansson", books_count: 0>, #<Subscriber nick: "webster132", name: "David Heinemeier Hansson", books_count: 0>]>
 
 
- 26) Failure:
+ 23) Failure:
 test_update_all_doesnt_ignore_order(PersistencesTest) [/home/chris/Documents/rails/activerecord/test/cases/persistence_test.rb:45]:
 Failed assertion, no message given.
 
- 27) Failure:
+ 24) Failure:
 test_cache_does_not_wrap_string_results_in_arrays(QueryCacheTest) [/home/chris/Documents/rails/activerecord/test/cases/query_cache_test.rb:175]:
 Expected 2 to be an instance of String, not Fixnum.
 
- 28) Error:
+ 25) Error:
 test_update_all_with_joins_and_limit(RelationTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: The result returned is non-deterministic: UPDATE "comments" SET "post_id" = 2 WHERE "comments"."id" IN (SELECT TOP (1) "comments"."id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "posts"."id" = 1)
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
@@ -249,7 +237,7 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bundler/gems/activerecord-deprecated_finders-dd99c375c44b/lib/active_record/deprecated_finders/relation.rb:55:in `update_all_with_deprecated_options'
     /home/chris/Documents/rails/activerecord/test/cases/relations_test.rb:1214:in `test_update_all_with_joins_and_limit'
 
- 29) Error:
+ 26) Error:
 test_update_all_with_joins_and_offset(RelationTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: The result returned is non-deterministic: UPDATE "comments" SET "post_id" = 2 WHERE "comments"."id" IN (SELECT TOP (2147483647) START AT (2) "comments"."id" FROM "comments" INNER JOIN "posts" ON "posts"."id" = "comments"."post_id" WHERE "posts"."id" = 1)
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
@@ -266,7 +254,7 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/.rvm/gems/ruby-1.9.3-p286@rails/bundler/gems/activerecord-deprecated_finders-dd99c375c44b/lib/active_record/deprecated_finders/relation.rb:55:in `update_all_with_deprecated_options'
     /home/chris/Documents/rails/activerecord/test/cases/relations_test.rb:1229:in `test_update_all_with_joins_and_offset'
 
- 30) Error:
+ 27) Error:
 test_validate_uniqueness_with_limit_and_utf8(UniquenessValidationTest):
 ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereException: Right truncation of string data: INSERT INTO "events" ("title") VALUES (?)
     /home/chris/Documents/activerecord-sqlanywhere-adapter/lib/active_record/connection_adapters/sqlanywhere_adapter.rb:286:in `sqlanywhere_error'
@@ -283,13 +271,13 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:393:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/attribute_methods/dirty.rb:79:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `block in create'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__3438727985658572193__create__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__2794042471047454429__create__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:303:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/timestamp.rb:57:in `create'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:374:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `block in create_or_update'
-    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__3438727985658572193__save__callbacks'
+    /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:344:in `_run__2794042471047454429__save__callbacks'
     /home/chris/Documents/rails/activesupport/lib/active_support/callbacks.rb:77:in `run_callbacks'
     /home/chris/Documents/rails/activerecord/lib/active_record/callbacks.rb:299:in `create_or_update'
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:76:in `save'
@@ -308,4 +296,4 @@ ActiveRecord::StatementInvalid: ActiveRecord::ConnectionAdapters::SQLAnywhereExc
     /home/chris/Documents/rails/activerecord/lib/active_record/persistence.rb:37:in `create'
     /home/chris/Documents/rails/activerecord/test/cases/validations/uniqueness_validation_test.rb:310:in `test_validate_uniqueness_with_limit_and_utf8'
 
-3392 tests, 9670 assertions, 24 failures, 6 errors, 33 skips
+3392 tests, 9672 assertions, 21 failures, 6 errors, 33 skips
