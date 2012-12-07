@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.files = [
     "CHANGELOG",
     "LICENSE",
-    "README",
+    "README.md",
     "Rakefile",
     "test/connection.rb",
     "lib/active_record/connection_adapters/sqlanywhere_adapter.rb",
