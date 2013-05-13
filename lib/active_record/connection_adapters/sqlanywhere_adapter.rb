@@ -158,6 +158,10 @@ module ActiveRecord
         @visitor = Arel::Visitors::SQLAnywhere.new self
         connect!
       end
+
+      def explain(arel, binds = [])
+        # Not implemented
+      end
       
       def adapter_name #:nodoc:
         'SQLAnywhere'
