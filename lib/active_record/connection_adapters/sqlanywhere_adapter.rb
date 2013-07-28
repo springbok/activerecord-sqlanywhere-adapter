@@ -463,7 +463,7 @@ module ActiveRecord
       protected
       
         def select(sql, name = nil, binds = []) #:nodoc:
-           exec_query(sql, name, binds).to_a
+           exec_query(sql, name, binds)
         end
 
         # Queries the structure of a table including the columns names, defaults, type, and nullability 
