@@ -258,7 +258,7 @@ module ActiveRecord
 
       # The database execution function
       def execute(sql, name = nil) #:nodoc:
-        if name == :skip_logging
+        if name == "skip_logging"
           begin
             stmt = SA.instance.api.sqlany_prepare(@connection, sql)
             sqlanywhere_error_test(sql) if stmt==nil
@@ -274,7 +274,7 @@ module ActiveRecord
           end
 
         else
-          log(sql, name) { execute(sql, :skip_logging) }
+          log(sql, name) { execute(sql, "skip_logging") }
         end
         @affected_rows
       end
@@ -496,7 +496,7 @@ FROM
 WHERE
   table_name = '#{table_name}'
 SQL
-          structure = exec_query(sql, :skip_logging).to_hash
+          structure = exec_query(sql, "skip_logging").to_hash
 
           structure.map do |column|
             if String === column["default"]
