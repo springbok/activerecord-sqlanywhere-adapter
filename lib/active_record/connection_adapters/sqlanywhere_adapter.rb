@@ -77,7 +77,10 @@ module ActiveRecord
 
         raise ArgumentError, "No database name was given. Please add a :database option." unless config.has_key?(:database)
 
-        connection_string = "ServerName=#{(config[:server] || config[:database])};DatabaseName=#{config[:database]};UserID=#{config[:username]};Password=#{config[:password]};"
+        connection_string  = "ServerName=#{(config[:server] || config[:database])};"
+        connection_string += "DatabaseName=#{config[:database]};"
+        connection_string += "UserID=#{config[:username]};"
+        connection_string += "Password=#{config[:password]};"
         connection_string += "CommLinks=#{config[:commlinks]};" unless config[:commlinks].nil?
         connection_string += "ConnectionName=#{config[:connection_name]};" unless config[:connection_name].nil?
         connection_string += "CharSet=#{config[:encoding]};" unless config[:encoding].nil?      
