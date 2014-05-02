@@ -33,19 +33,19 @@ module Arel
         super.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
       end
 
-      def visit_Arel_Nodes_Offset(o)
+      def visit_Arel_Nodes_Offset(o, collector)
         "START AT #{visit(o.expr) + 1}"
       end
 
-      def visit_Arel_Nodes_Limit(o)
+      def visit_Arel_Nodes_Limit(o, collector)
         "TOP #{visit o.expr}"
       end
       
-      def visit_Arel_Nodes_True(o)
+      def visit_Arel_Nodes_True(o, collector)
         "1=1"
       end
       
-      def visit_Arel_Nodes_False(o)
+      def visit_Arel_Nodes_False(o, collector)
         "1=0"
       end
 
