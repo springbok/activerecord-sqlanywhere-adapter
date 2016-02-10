@@ -116,7 +116,6 @@ module ActiveRecord
         end
         
         def self.binary_to_string(value)
-          # EVT: 10/02/2016
           # This is causing issues when importing some documents including PDF docs
           # that have \\x46 in the document, the code below is replacing this with
           # the hex value of 46 which modifies the document content and makes it unreadable
