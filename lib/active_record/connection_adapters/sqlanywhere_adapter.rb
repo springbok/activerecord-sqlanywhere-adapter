@@ -231,8 +231,8 @@ module ActiveRecord
         }
       end
 
-      def select_rows(sql, name = nil)
-        exec_query(sql, name).rows
+      def select_rows(sql, name = nil, binds = [])
+        exec_query(sql, name, binds).rows
       end
 
       # QUOTING ==================================================
