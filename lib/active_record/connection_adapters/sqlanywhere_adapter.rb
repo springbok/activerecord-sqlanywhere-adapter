@@ -444,6 +444,7 @@ module ActiveRecord
         else
           exec_query "ALTER TABLE #{quote_table_name(table_name)} RENAME #{quote_column_name(column_name)} TO #{quote_column_name(new_column_name)}"
         end
+        rename_column_indexes(table_name, column_name, new_column_name)
       end
 
       def remove_column(table_name, *column_names)
