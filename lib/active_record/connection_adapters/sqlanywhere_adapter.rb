@@ -416,6 +416,7 @@ module ActiveRecord
 
       def rename_table(name, new_name)
         exec_query "ALTER TABLE #{quote_table_name(name)} RENAME #{quote_table_name(new_name)}"
+        rename_table_indexes(name, new_name)
       end
 
       def change_column_default(table_name, column_name, default) #:nodoc:
