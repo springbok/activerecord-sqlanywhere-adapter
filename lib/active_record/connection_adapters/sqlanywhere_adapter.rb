@@ -449,6 +449,7 @@ module ActiveRecord
       end
 
       def remove_column(table_name, *column_names)
+        raise ArgumentError, "missing column name(s) for remove_column"
         column_names = column_names.flatten
         quoted_column_names = column_names.map {|column_name| quote_column_name(column_name) }
         column_names.zip(quoted_column_names).each do |unquoted_column_name, column_name|
