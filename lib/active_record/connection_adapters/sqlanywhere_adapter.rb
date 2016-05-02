@@ -448,7 +448,8 @@ module ActiveRecord
 
       def remove_column(table_name, *column_names)
         column_names = column_names.flatten
-        column_names.zip(columns_for_remove(table_name, *column_names)).each do |unquoted_column_name, column_name|
+        quoted_column_names = column_names.map {|column_name| quote_column_name(column_name) }
+        column_names.zip(quoted_column_names).each do |unquoted_column_name, column_name|
           sql = <<-SQL
             SELECT "index_name" FROM SYS.SYSTAB join SYS.SYSTABCOL join SYS.SYSIDXCOL join SYS.SYSIDX
             WHERE "column_name" = '#{unquoted_column_name}' AND "table_name" = '#{table_name}'
