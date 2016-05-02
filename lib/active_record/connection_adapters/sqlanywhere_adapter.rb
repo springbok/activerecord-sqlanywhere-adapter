@@ -159,6 +159,10 @@ module ActiveRecord
         include Arel::Visitors::BindVisitor
       end
 
+      def quote_table_name_for_assignment(table, attr)
+        quote_column_name(attr)
+      end
+
       def initialize( connection, logger, connection_string = "") #:nodoc:
         super(connection, logger)
         @auto_commit = true
