@@ -6,7 +6,10 @@ module Arel
       def visit_Arel_Nodes_SelectStatement(o, collector)
         using_distinct = o.cores.any? do |core|
           core.set_quantifier.class == Arel::Nodes::Distinct
-        end
+        end &&
+        # we don't need to use DISTINCT if there's a limit of 1
+        (o.limit && o.limit.expr>1)
+
         if o.limit and o.limit.expr == 0
           o = o.dup
           o.limit = nil
@@ -16,7 +19,7 @@ module Arel
             core
           end
         end
-        
+
         [
           "SELECT",
           ("DISTINCT" if using_distinct),
@@ -28,7 +31,7 @@ module Arel
           (visit(o.lock) if o.lock),
         ].compact.join ' '
       end
-      
+
       def visit_Arel_Nodes_SelectCore(o, collector)
         super.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
       end
@@ -40,11 +43,11 @@ module Arel
       def visit_Arel_Nodes_Limit(o, collector)
         "TOP #{visit o.expr}"
       end
-      
+
       def visit_Arel_Nodes_True(o, collector)
         "1=1"
       end
-      
+
       def visit_Arel_Nodes_False(o, collector)
         "1=0"
       end
