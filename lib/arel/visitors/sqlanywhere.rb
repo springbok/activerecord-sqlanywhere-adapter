@@ -29,9 +29,16 @@ module Arel
           (visit(Arel::Nodes::Limit.new(2147483647)) if o.limit == nil and o.offset),
           (visit(o.offset) if o.offset),
           o.cores.map { |x| visit_Arel_Nodes_SelectCore(x, collector) }.join,
-          ("ORDER BY #{o.orders.map { |x| visit x }.join(', ')}" unless o.orders.empty?),
+          order_by_helper(o),
           (visit(o.lock) if o.lock),
         ].compact.join ' '
+      end
+
+      def order_by_helper(o)
+        return "ORDER BY #{o.orders.map { |x| visit x }.join(', ')}" unless o.orders.empty?
+        # Attempt to avoid SQLA error 'The result returned is non-deterministic'.
+        # Complete nonsense.
+        return "ORDER BY 1" if o.limit
       end
 
       def visit_Arel_Nodes_SelectCore(o, collector)
