@@ -6,9 +6,11 @@ module Arel
       def visit_Arel_Nodes_SelectStatement(o, collector)
         using_distinct = o.cores.any? do |core|
           core.set_quantifier.class == Arel::Nodes::Distinct
-        end &&
+        end
+
         # we don't need to use DISTINCT if there's a limit of 1
-        (o.limit && o.limit.expr>1)
+        # (avoids bug in SQLA with DISTINCT and GROUP BY)
+        using_distinct= false if using_distinct && o.limit && o.limit.expr>1
 
         if o.limit and o.limit.expr == 0
           o = o.dup
