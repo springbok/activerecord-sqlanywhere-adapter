@@ -5,7 +5,8 @@ module Arel
 
       def visit_Arel_Nodes_SelectStatement(o, collector)
         using_distinct = o.cores.any? do |core|
-          core.set_quantifier.class == Arel::Nodes::Distinct
+          core.set_quantifier.class == Arel::Nodes::Distinct or
+          core.projections.grep /DISTINCT/
         end
 
         # we don't need to use DISTINCT if there's a limit of 1
@@ -24,7 +25,7 @@ module Arel
 
         [
           "SELECT",
-          #("DISTINCT" if using_distinct),
+          ("DISTINCT" if using_distinct),
           (visit(o.limit) if o.limit),
           (visit(Arel::Nodes::Limit.new(2147483647)) if o.limit == nil and o.offset),
           (visit(o.offset) if o.offset),
@@ -42,7 +43,7 @@ module Arel
       end
 
       def visit_Arel_Nodes_SelectCore(o, collector)
-        super.sub(/^SELECT\s*/, '')
+        super.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
       end
 
       def visit_Arel_Nodes_Offset(o, collector)
