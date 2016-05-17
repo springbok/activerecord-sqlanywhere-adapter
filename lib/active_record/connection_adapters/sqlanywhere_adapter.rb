@@ -328,17 +328,17 @@ module ActiveRecord
       end
 
       def begin_db_transaction #:nodoc:
-        @auto_commit = false;
+        @auto_commit = false
       end
 
       def commit_db_transaction #:nodoc:
         SA.instance.api.sqlany_commit(@connection)
-        @auto_commit = true;
+        @auto_commit = true
       end
 
       def rollback_db_transaction #:nodoc:
         SA.instance.api.sqlany_rollback(@connection)
-        @auto_commit = true;
+        @auto_commit = true
       end
 
       # SQL Anywhere does not support sizing of integers based on the sytax INTEGER(size). Integer sizes
@@ -380,7 +380,7 @@ module ActiveRecord
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
         sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
-        exec_query(sql, name).map { |row| row["table_name"] }
+        exec_query(sql, 'skip_logging').map { |row| row["table_name"] }
       end
 
       def columns(table_name, name = nil) #:nodoc:
@@ -549,83 +549,82 @@ SQL
         end
 
       def exec_query(sql, name = nil, binds = [])
-        log(sql, name, binds) do
-          stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-          sqlanywhere_error_test(sql) if stmt==nil
+        return log(sql, name, binds) { exec_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
+        stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+        sqlanywhere_error_test(sql) if stmt==nil
 
-          begin
+        begin
 
-            for i in 0...binds.length
-              bind_type = binds[i][0].type
-              bind_value = binds[i][1]
-              result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
-              sqlanywhere_error_test(sql) if result==0
-
-              bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
-              if bind_value.nil?
-                bind_param.set_value(nil)
-              else
-                # perhaps all this ought to be handled in the column class?
-                case bind_type
-                when :boolean
-                  bind_param.set_value(bind_value ? 1 : 0)
-                when :decimal
-                  bind_param.set_value(bind_value.to_s)
-                when :date
-                  bind_param.set_value(bind_value.to_s)
-                when :datetime, :time
-                  bind_param.set_value(bind_value.to_time.getutc.strftime("%Y-%m-%d %H:%M:%S"))
-                when :integer
-                  bind_param.set_value(bind_value.to_i)
-                else
-                  bind_param.set_value(bind_value)
-                end
-              end
-              result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
-              sqlanywhere_error_test(sql) if result==0
-
-            end
-
-            if SA.instance.api.sqlany_execute(stmt) == 0
-              sqlanywhere_error_test(sql)
-            end
-
-            fields = []
-            native_types = []
-
-            num_cols = SA.instance.api.sqlany_num_cols(stmt)
-            sqlanywhere_error_test(sql) if num_cols == -1
-
-            for i in 0...num_cols
-              result, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
-              sqlanywhere_error_test(sql) if result==0
-              fields << name
-              native_types << native_type
-            end
-            rows = []
-            while SA.instance.api.sqlany_fetch_next(stmt) == 1
-              row = []
-              for i in 0...num_cols
-                r, value = SA.instance.api.sqlany_get_column(stmt, i)
-                row << native_type_to_ruby_type(native_types[i], value)
-              end
-              rows << row
-            end
-            @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
-            sqlanywhere_error_test(sql) if @affected_rows==-1
-          rescue StandardError => e
-            @affected_rows = 0
-            raise e
-          ensure
-            SA.instance.api.sqlany_free_stmt(stmt)
-          end
-
-          if @auto_commit
-            result = SA.instance.api.sqlany_commit(@connection)
+          for i in 0...binds.length
+            bind_type = binds[i][0].type
+            bind_value = binds[i][1]
+            result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
             sqlanywhere_error_test(sql) if result==0
+
+            bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
+            if bind_value.nil?
+              bind_param.set_value(nil)
+            else
+              # perhaps all this ought to be handled in the column class?
+              case bind_type
+              when :boolean
+                bind_param.set_value(bind_value ? 1 : 0)
+              when :decimal
+                bind_param.set_value(bind_value.to_s)
+              when :date
+                bind_param.set_value(bind_value.to_s)
+              when :datetime, :time
+                bind_param.set_value(bind_value.to_time.getutc.strftime("%Y-%m-%d %H:%M:%S"))
+              when :integer
+                bind_param.set_value(bind_value.to_i)
+              else
+                bind_param.set_value(bind_value)
+              end
+            end
+            result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
+            sqlanywhere_error_test(sql) if result==0
+
           end
-          return ActiveRecord::Result.new(fields, rows)
+
+          if SA.instance.api.sqlany_execute(stmt) == 0
+            sqlanywhere_error_test(sql)
+          end
+
+          fields = []
+          native_types = []
+
+          num_cols = SA.instance.api.sqlany_num_cols(stmt)
+          sqlanywhere_error_test(sql) if num_cols == -1
+
+          for i in 0...num_cols
+            result, col_num, name, ruby_type, native_type, precision, scale, max_size, nullable = SA.instance.api.sqlany_get_column_info(stmt, i)
+            sqlanywhere_error_test(sql) if result==0
+            fields << name
+            native_types << native_type
+          end
+          rows = []
+          while SA.instance.api.sqlany_fetch_next(stmt) == 1
+            row = []
+            for i in 0...num_cols
+              r, value = SA.instance.api.sqlany_get_column(stmt, i)
+              row << native_type_to_ruby_type(native_types[i], value)
+            end
+            rows << row
+          end
+          @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
+          sqlanywhere_error_test(sql) if @affected_rows==-1
+        rescue StandardError => e
+          @affected_rows = 0
+          raise e
+        ensure
+          SA.instance.api.sqlany_free_stmt(stmt)
         end
+
+        if @auto_commit
+          result = SA.instance.api.sqlany_commit(@connection)
+          sqlanywhere_error_test(sql) if result==0
+        end
+        return ActiveRecord::Result.new(fields, rows)
       end
 
       def exec_delete(sql, name = 'SQL', binds = [])
