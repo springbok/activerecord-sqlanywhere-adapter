@@ -24,7 +24,7 @@ module Arel
 
         [
           "SELECT",
-          ("DISTINCT" if using_distinct),
+          #("DISTINCT" if using_distinct),
           (visit(o.limit) if o.limit),
           (visit(Arel::Nodes::Limit.new(2147483647)) if o.limit == nil and o.offset),
           (visit(o.offset) if o.offset),
@@ -42,7 +42,7 @@ module Arel
       end
 
       def visit_Arel_Nodes_SelectCore(o, collector)
-        super.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
+        super.sub(/^SELECT\s*/, '')
       end
 
       def visit_Arel_Nodes_Offset(o, collector)
