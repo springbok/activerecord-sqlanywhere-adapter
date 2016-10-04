@@ -1,42 +1,28 @@
-Gem::Specification.new do |s|
-  s.name = %q{activerecord-sqlanywhere-adapter}
-  s.version = "1.0.1"
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'active_record/connection_adapters/version'
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Eric Farar}]
-  s.description = %q{ActiveRecord driver for SQL Anywhere}
-  s.email = %q{eric.farrar@ianywhere.com}
-  s.files = [
-    "CHANGELOG",
-    "LICENSE",
-    "README.md",
-    "Rakefile",
-    "test/connection.rb",
-    "lib/active_record/connection_adapters/sqlanywhere_adapter.rb",
-    "lib/arel/visitors/sqlanywhere.rb",
-    "lib/active_record/connection_adapters/sqlanywhere.rake",
-    "lib/activerecord-sqlanywhere-adapter.rb"
+Gem::Specification.new do |spec|
+  spec.name          = "activerecord-sqlanywhere-adapter"
+  spec.version       = Activerecord::ConnectionAdapters::VERSION
+  spec.authors       = [%q{Eric Farar}]
+  spec.email         = [%q{eric.farrar@ianywhere.com}]
 
-  ]
-  s.homepage = %q{http://sqlanywhere.rubyforge.org}
-  s.licenses = [%q{Apache License Version 2.0}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{>= 1.8.8}
-  s.summary = %q{ActiveRecord driver for SQL Anywhere}
+  spec.summary       = %q{ActiveRecord driver for SQL Anywhere}
+  spec.description   = %q{ActiveRecord driver for SQL Anywhere}
+  spec.homepage      = %q{http://sqlanywhere.rubyforge.org}
+  spec.license       = %q{Apache License Version 2.0}
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<sqlanywhere>, [">= 0.1.5"])
-      s.add_runtime_dependency(%q<activerecord>, [">= 3.0.3"])
-    else
-      s.add_dependency(%q<sqlanywhere>, [">= 0.1.5"])
-      s.add_dependency(%q<activerecord>, [">= 3.0.3"])
-    end
-  else
-    s.add_dependency(%q<sqlanywhere>, [">= 0.1.5"])
-    s.add_dependency(%q<activerecord>, [">= 3.0.3"])
+  spec.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
   end
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_runtime_dependency(%q<sqlanywhere>, [">= 0.1.5"])
+  spec.add_runtime_dependency(%q<activerecord>, [">= 5.0.0"])
+  spec.required_ruby_version = '>= 2.2.2'
 end
 
