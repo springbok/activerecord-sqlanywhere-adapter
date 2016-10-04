@@ -45,10 +45,10 @@ spec = Gem::Specification.new do |spec|
   spec.rubyforge_project = 'sqlanywhere'
   spec.homepage = 'http://sqlanywhere.rubyforge.org'  
   spec.files = Dir['lib/**/*.rb'] + Dir['test/**/*']
-  spec.required_ruby_version = '>= 2.2.2'
+  spec.required_ruby_version = '>= 1.9.2'
   spec.require_paths = ['lib']
   spec.add_dependency('sqlanywhere', '>= 0.1.5')
-  spec.add_dependency('activerecord', '>= 5.0.0')
+  spec.add_dependency('activerecord', '>= 3.0.3')
   spec.rdoc_options << '--title' << 'ActiveRecord Driver for SQL Anywhere' <<
                        '--main' << 'README' <<
                        '--line-numbers'
