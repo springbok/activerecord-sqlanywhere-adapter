@@ -66,4 +66,4 @@ module Arel
   end
 end
 
-Arel::Visitors::VISITORS['sqlanywhere'] = Arel::Visitors::SQLAnywhere
+#Arel::Visitors::VISITORS['sqlanywhere'] = Arel::Visitors::SQLAnywhere

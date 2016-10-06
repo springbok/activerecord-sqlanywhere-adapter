@@ -23,8 +23,9 @@
 #====================================================
 
 require 'active_record/connection_adapters/abstract_adapter'
+require "active_record/connection_adapters/sqlanywhere/column"
+require 'active_record/connection_adapters/sqlanywhere/quoting'
 require 'arel/visitors/sqlanywhere.rb'
-require 'arel/visitors/bind_visitor'
 
 # Singleton class to hold a valid instance of the SQLAnywhereInterface across all connections
 class SA
@@ -106,62 +107,11 @@ module ActiveRecord
       end
     end
 
-    class SQLAnywhereColumn < Column
-      private
-        # Overridden to handle SQL Anywhere integer, varchar, binary, and timestamp types
-        def simplified_type(field_type)
-          return :boolean if field_type =~ /tinyint/i
-          return :boolean if field_type =~ /bit/i
-          return :text if field_type =~ /long varchar/i
-          return :string if field_type =~ /varchar/i
-          return :binary if field_type =~ /long binary/i
-          return :datetime if field_type =~ /timestamp/i
-          return :integer if field_type =~ /smallint|bigint/i
-          return :text if field_type =~ /xml/i
-          return :integer if field_type =~ /uniqueidentifier/i
-          super
-        end
-
-        def extract_limit(sql_type)
-          case sql_type
-            when /^tinyint/i
-              1
-            when /^smallint/i
-              2
-            when /^integer/i
-              4
-            when /^bigint/i
-              8
-            else super
-          end
-        end
-
-      protected
-        # Handles the encoding of a binary object into SQL Anywhere
-        # SQL Anywhere requires that binary values be encoded as \xHH, where HH is a hexadecimal number
-        # This function encodes the binary string in this format
-        def self.string_to_binary(value)
-          "\\x" + value.unpack("H*")[0].scan(/../).join("\\x")
-        end
-
-        def self.binary_to_string(value)
-          # This is causing issues when importing some documents including PDF docs
-          # that have \\x46 in the document, the code below is replacing this with
-          # the hex value of 46 which modifies the document content and makes it unreadable
-          # and no longer useful. I'm not exactly sure why this is needed as I don't want my 
-          # binary data modified in any way
-          #value.gsub(/\\x[0-9]{2}/) { |byte| byte[2..3].hex }
-        end
-
-		# Should override the time column values.
-		# Sybase doesn't like the time zones.
-
-    end
-
     class SQLAnywhereAdapter < AbstractAdapter
+      include SQLAnywhere::Quoting
 
-      class BindSubstitution < Arel::Visitors::SQLAnywhere # :nodoc:
-        include Arel::Visitors::BindVisitor
+      def arel_visitor
+        Arel::Visitors::SQLAnywhere.new self
       end
 
       def quote_table_name_for_assignment(table, attr)
@@ -173,7 +123,6 @@ module ActiveRecord
         @auto_commit = true
         @affected_rows = 0
         @connection_string = connection_string
-        @visitor = Arel::Visitors::SQLAnywhere.new self
         connect!
       end
 
@@ -201,7 +150,7 @@ module ActiveRecord
       end
 
       def disconnect!
-        result = SA.instance.api.sqlany_disconnect( @connection )
+        SA.instance.api.sqlany_disconnect( @connection )
         super
       end
 
@@ -242,36 +191,6 @@ module ActiveRecord
 
       def select_rows(sql, name = nil, binds = [])
         exec_query(sql, name, binds).rows
-      end
-
-      # QUOTING ==================================================
-
-      # Applies quotations around column names in generated queries
-      def quote_column_name(name) #:nodoc:
-        # Remove backslashes and double quotes from column names
-        name = name.to_s.gsub(/\\|"/, '')
-        %Q("#{name}")
-      end
-
-      # Handles special quoting of binary columns. Binary columns will be treated as strings inside of ActiveRecord.
-      # ActiveRecord requires that any strings it inserts into databases must escape the backslash (\).
-      # Since in the binary case, the (\x) is significant to SQL Anywhere, it cannot be escaped.
-      def quote(value, column = nil)
-        case value
-          when String, ActiveSupport::Multibyte::Chars
-            value_S = value.to_s
-            if column && column.type == :binary && column.class.respond_to?(:string_to_binary)
-              "'#{column.class.string_to_binary(value_S)}'"
-            else
-               super(value, column)
-            end
-          when TrueClass
-            1
-          when FalseClass
-            0
-          else
-            super(value, column)
-        end
       end
 
       # The database execution function
@@ -350,7 +269,7 @@ module ActiveRecord
       # must be captured when generating the SQL and replaced with the appropriate size.
       def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
         type = type.to_sym
-        if native = native_database_types[type]
+        if native_database_types[type]
           if type == :integer
             case limit
               when 1
@@ -385,6 +304,12 @@ module ActiveRecord
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
         sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
+        exec_query(sql, 'skip_logging').map { |row| row["table_name"] }
+      end
+
+      # Returns an array of view names defined in the database.
+      def views(name = nil) #:nodoc:
+        sql = "SELECT * FROM SYS.SYSTAB WHERE table_type_str = 'VIEW' AND creator NOT IN (0,3,5)"
         exec_query(sql, 'skip_logging').map { |row| row["table_name"] }
       end
 
@@ -469,20 +394,48 @@ module ActiveRecord
         end
       end
 
-     def disable_referential_integrity(&block) #:nodoc:
-       old = select_value("SELECT connection_property( 'wait_for_commit' )")
+      def disable_referential_integrity(&block) #:nodoc:
+        old = select_value("SELECT connection_property( 'wait_for_commit' )")
 
-       begin
-         update("SET TEMPORARY OPTION wait_for_commit = ON")
-         yield
-       ensure
-         update("SET TEMPORARY OPTION wait_for_commit = #{old}")
-       end
-     end
-
-
+        begin
+          update("SET TEMPORARY OPTION wait_for_commit = ON")
+          yield
+        ensure
+          update("SET TEMPORARY OPTION wait_for_commit = #{old}")
+        end
+      end
 
       protected
+
+      # === Abstract Adapter (Misc Support) =========================== #
+
+        def extract_limit(sql_type)
+          case sql_type
+            when /^tinyint/i
+              1
+            when /^smallint/i
+              2
+            when /^integer/i
+              4
+            when /^bigint/i
+              8
+            else super
+          end
+        end
+
+        def initialize_type_map(m) # :nodoc:
+          register_class_with_limit m, %r(tinyint)i,          Type::Boolean
+          register_class_with_limit m, %r(bit)i,              Type::Boolean
+          register_class_with_limit m, %r(long varchar)i,     Type::Text
+          register_class_with_limit m, %r(varchar)i,          Type::String
+          register_class_with_limit m, %r(timestamp)i,        Type::DateTime
+          register_class_with_limit m, %r(smallint|bigint)i,  Type::Integer
+          register_class_with_limit m, %r(xml)i,              Type::String
+          register_class_with_limit m, %r(uniqueidentifier)i, Type::Integer
+          register_class_with_limit m, %r(long binary)i,      Type::Binary
+
+          super
+        end
 
         def select(sql, name = nil, binds = []) #:nodoc:
            exec_query(sql, name, binds)
