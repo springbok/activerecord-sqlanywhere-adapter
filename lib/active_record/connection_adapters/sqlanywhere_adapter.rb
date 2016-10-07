@@ -315,7 +315,8 @@ module ActiveRecord
 
       def columns(table_name, name = nil) #:nodoc:
         table_structure(table_name).map do |field|
-          SQLAnywhereColumn.new(field['name'], field['default'], field['domain'], (field['nulls'] == 1))
+          type_metadata = fetch_type_metadata(field[:domain])
+          SQLAnywhereColumn.new(field['name'], field['default'], type_metadata, (field['nulls'] == 1), table_name)
         end
       end
 
@@ -506,42 +507,29 @@ SQL
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 
-      def exec_query(sql, name = nil, binds = [])
+      def exec_query(sql, name = nil, binds = [], prepare=false)
         return log(sql, name, binds) { exec_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
 
         begin
-
-          for i in 0...binds.length
-            bind_type = binds[i][0].type
-            bind_value = binds[i][1]
+          # Rearrange binds so limit is the first bind, arel will add the limit bind last
+          # which causes a problem as it is the first for SQLA
+          if binds && binds.size > 0 && sql.upcase.include?('TOP')
+            binds = binds.select {|b| b.name.upcase == 'LIMIT'} + binds.select {|b| b.name.upcase != 'LIMIT'}
+          end
+          binds.each_with_index do |bind, i|
+            bind_value = type_cast(bind.value_for_database)
             result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
             sqlanywhere_error_test(sql) if result==0
-
             bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
             if bind_value.nil?
               bind_param.set_value(nil)
             else
-              # perhaps all this ought to be handled in the column class?
-              case bind_type
-              when :boolean
-                bind_param.set_value(bind_value ? 1 : 0)
-              when :decimal
-                bind_param.set_value(bind_value.to_s)
-              when :date
-                bind_param.set_value(bind_value.to_s)
-              when :datetime, :time
-                bind_param.set_value(bind_value.to_time.getutc.strftime("%Y-%m-%d %H:%M:%S"))
-              when :integer
-                bind_param.set_value(bind_value.to_i)
-              else
-                bind_param.set_value(bind_value)
-              end
+              bind_param.set_value(bind_value)
             end
             result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
             sqlanywhere_error_test(sql) if result==0
-
           end
 
           if SA.instance.api.sqlany_execute(stmt) == 0
