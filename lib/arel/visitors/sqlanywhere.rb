@@ -45,12 +45,26 @@ module Arel
 
       def order_by_helper(o, collector)
         if !o.orders.empty?
-          collector << " ORDER BY #{o.orders.map { |x| visit(x, collector) }.join(', ')} "
+          collector << ORDER_BY
+          len = o.orders.length - 1
+          o.orders.each_with_index { |x, i|
+            collector = visit(x, collector)
+            collector << COMMA unless len == i
+          }
         else
           # Attempt to avoid SQLA error 'The result returned is non-deterministic'.
           # Complete nonsense.
           collector << " ORDER BY 1" if o.limit
         end
+
+
+        #if !o.orders.empty?
+        #  collector << " ORDER BY #{o.orders.map { |x| visit(x, collector) }.join(', ')} "
+        #else
+          # Attempt to avoid SQLA error 'The result returned is non-deterministic'.
+          # Complete nonsense.
+        #  collector << " ORDER BY 1" if o.limit
+        #end
         collector
       end
 
