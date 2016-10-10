@@ -406,6 +406,32 @@ module ActiveRecord
         end
       end
 
+      # Adjust the order of offset & limit as SQLA requires
+      # TOP & START AT to be at the start of the statement not the end
+      def combine_bind_parameters(
+        from_clause: [],
+        join_clause: [],
+        where_clause: [],
+        having_clause: [],
+        limit: nil,
+        offset: nil
+      ) # :nodoc:
+        result = []
+        result << limit if limit
+        if offset
+          # Can't see a better way of doing this, we need to add 1 to the offset value
+          # as SQLA uses START AT, see active_record model query_methods.rb bound_attributes method
+          offset_bind = Attribute.with_cast_value(
+            "OFFSET".freeze,
+            offset.value.to_i+1, # SQLA START AT = OFFSET + 1
+            Type::Value.new,
+          )
+          result << offset_bind
+        end
+        result = result + from_clause + join_clause + where_clause + having_clause
+        result
+      end
+
       protected
 
       # === Abstract Adapter (Misc Support) =========================== #
@@ -513,11 +539,6 @@ SQL
         sqlanywhere_error_test(sql) if stmt==nil
 
         begin
-          # Rearrange binds so limit is the first bind, arel will add the limit bind last
-          # which causes a problem as it is the first for SQLA
-          if binds && binds.size > 0 && sql.upcase.include?('TOP')
-            binds = binds.select {|b| b.name.upcase == 'LIMIT'} + binds.select {|b| b.name.upcase != 'LIMIT'}
-          end
           binds.each_with_index do |bind, i|
             bind_value = type_cast(bind.value_for_database)
             result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)

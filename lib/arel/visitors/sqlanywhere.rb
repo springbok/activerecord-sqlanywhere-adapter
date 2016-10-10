@@ -28,13 +28,14 @@ module Arel
         collector = visit(o.limit, collector) if o.limit
         # START AT x for offset
         collector = visit(Arel::Nodes::Limit.new(2147483647), collector) if !o.limit and o.offset
+        collector = visit(o.offset, collector) if o.offset
         # Add select
         collector_select = ActiveRecord::ConnectionAdapters::AbstractAdapter::SQLString.new
         o.cores.inject(collector_select) { |c,x|
           visit_Arel_Nodes_SelectCore(x, c)
         }
-        # Remove SELECT added by arel
-        select_value = collector_select.value.sub(/^SELECT?\s*/, '')
+        # Remove SELECT and/or DISTINCT added by arel
+        select_value = collector_select.value.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
         collector << " " + select_value
         # ORDER BY
         collector = order_by_helper(o, collector)
@@ -54,28 +55,18 @@ module Arel
         else
           # Attempt to avoid SQLA error 'The result returned is non-deterministic'.
           # Complete nonsense.
-          collector << " ORDER BY 1" if o.limit
+          collector << " ORDER BY 1 " if o.limit
         end
-
-
-        #if !o.orders.empty?
-        #  collector << " ORDER BY #{o.orders.map { |x| visit(x, collector) }.join(', ')} "
-        #else
-          # Attempt to avoid SQLA error 'The result returned is non-deterministic'.
-          # Complete nonsense.
-        #  collector << " ORDER BY 1" if o.limit
-        #end
         collector
       end
 
       def visit_Arel_Nodes_Offset(o, collector)
-        #"START AT #{visit(o.expr, collector) + 1}"
-        collector << "START AT "
-        visit(o.expr+1, collector)
+        collector << " START AT "
+        visit(o.expr, collector)
       end
 
       def visit_Arel_Nodes_Limit(o, collector)
-        collector << "TOP "
+        collector << " TOP "
         visit(o.expr, collector)
       end
 
