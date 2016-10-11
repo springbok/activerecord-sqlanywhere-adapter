@@ -25,10 +25,11 @@ module Arel
         using_distinct = false if using_distinct && o.limit && o.limit.expr == 1
         collector << "DISTINCT " if using_distinct
         # Use TOP x for limit statements
-        collector = visit(o.limit, collector) if o.limit
+        collector = maybe_visit(o.limit, collector)
         # START AT x for offset
-        collector = visit(Arel::Nodes::Limit.new(2147483647), collector) if !o.limit and o.offset
-        collector = visit(o.offset, collector) if o.offset
+        # Not sure what this code was meant to do??
+        #collector = visit(Arel::Nodes::Limit.new(2147483647), collector) if !o.limit and o.offset
+        collector = maybe_visit(o.offset, collector)
         # Add select
         collector_select = ActiveRecord::ConnectionAdapters::AbstractAdapter::SQLString.new
         o.cores.inject(collector_select) { |c,x|
@@ -39,7 +40,7 @@ module Arel
         collector << " " + select_value
         # ORDER BY
         collector = order_by_helper(o, collector)
-        collector = visit(o.lock, collector) if o.lock
+        collector = maybe_visit(o.lock, collector)
 
         collector
       end
