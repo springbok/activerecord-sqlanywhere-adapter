@@ -315,7 +315,7 @@ module ActiveRecord
 
       def columns(table_name, name = nil) #:nodoc:
         table_structure(table_name).map do |field|
-          type_metadata = fetch_type_metadata(field[:domain])
+          type_metadata = fetch_type_metadata(field['domain'])
           SQLAnywhereColumn.new(field['name'], field['default'], type_metadata, (field['nulls'] == 1), table_name)
         end
       end
