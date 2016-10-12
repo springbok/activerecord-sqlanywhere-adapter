@@ -446,6 +446,27 @@ module ActiveRecord
         [super, *order_columns].join(', ')
       end
 
+      def primary_keys(table_name) # :nodoc:
+        # SQL to get primary keys for a table
+        sql = "SELECT list(c.column_name order by ixc.sequence) as pk_columns
+          from SYSIDX ix, SYSTABLE t, SYSIDXCOL ixc, SYSCOLUMN c
+          where ix.table_id = t.table_id
+            and ixc.table_id = t.table_id
+            and ixc.index_id = ix.index_id
+            and ixc.table_id = c.table_id
+            and ixc.column_id = c.column_id
+            and ix.index_category in (1,2)
+            and t.table_name = '#{table_name}'
+          group by ix.index_name, ix.index_id, ix.index_category
+          order by ix.index_id"
+        pks = exec_query(sql, "skip_logging").to_hash.first
+        if pks['pk_columns']
+          pks['pk_columns'].split(',')
+        else
+          nil
+        end
+      end
+
       protected
 
       # === Abstract Adapter (Misc Support) =========================== #
