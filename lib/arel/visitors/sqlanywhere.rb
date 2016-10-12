@@ -36,7 +36,7 @@ module Arel
           visit_Arel_Nodes_SelectCore(x, c)
         }
         # Remove SELECT and/or DISTINCT added by arel
-        select_value = collector_select.value.sub(/^SELECT(\s+DISTINCT)?\s*/, '')
+        select_value = collector_select.value.sub(/^SELECT(\s+DISTINCT)?\s*/i, '')
         collector << " " + select_value
         # ORDER BY
         collector = order_by_helper(o, collector)
