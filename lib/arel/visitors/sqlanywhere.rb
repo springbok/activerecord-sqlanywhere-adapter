@@ -5,15 +5,18 @@ module Arel
 
       def visit_Arel_Nodes_SelectStatement(o, collector)
 
-        if o.limit and o.limit.expr == 0
-          o = o.dup
-          o.limit = nil
-          o.cores.map! do |core|
-            core = core.dup
-            core.wheres << Arel::Nodes::False.new
-            core
-          end
-        end
+        # o.limit.expr now a bindparam so we can not
+        # access it's value, unsure how to replicate this
+        # code, also not sure what it's meant to do
+        #if o.limit and o.limit.expr == 0
+        #  o = o.dup
+        #  o.limit = nil
+        #  o.cores.map! do |core|
+        #    core = core.dup
+        #    core.wheres << Arel::Nodes::False.new
+        #    core
+        #  end
+        #end
 
         collector << "SELECT "
         # Handle DISTINCT
@@ -22,7 +25,8 @@ module Arel
         }
         # We don't need to use DISTINCT if there's a limit of 1
         # (avoids bug in SQLA with DISTINCT and GROUP BY)
-        using_distinct = false if using_distinct && o.limit && o.limit.expr == 1
+        # Update: can no longer do this as o.limit.expr is a bindparam
+        using_distinct = false if using_distinct && o.limit #&& o.limit.expr == 1
         collector << "DISTINCT " if using_distinct
         # Use TOP x for limit statements
         collector = maybe_visit(o.limit, collector)
