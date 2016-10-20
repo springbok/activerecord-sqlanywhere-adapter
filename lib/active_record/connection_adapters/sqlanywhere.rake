@@ -50,7 +50,7 @@ namespace :db do
     redefine_task :dump => :environment do |existing_actions|
       if ActiveRecord::Base.configurations[Rails.env]['adapter'] == 'sqlanywhere'
         ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env])
-        ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::Base.connection.viewed_tables
+        #ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::Base.connection.viewed_tables
       end
       Array(existing_actions).each{|action| action.call}
     end
