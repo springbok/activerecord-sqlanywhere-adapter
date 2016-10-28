@@ -486,15 +486,39 @@ module ActiveRecord
         end
 
         def initialize_type_map(m) # :nodoc:
-          register_class_with_limit m, %r(tinyint)i,          Type::Boolean
-          register_class_with_limit m, %r(bit)i,              Type::Boolean
-          register_class_with_limit m, %r(long varchar)i,     Type::Text
-          register_class_with_limit m, %r(varchar)i,          Type::String
-          register_class_with_limit m, %r(timestamp)i,        Type::DateTime
-          register_class_with_limit m, %r(smallint|bigint)i,  Type::Integer
-          register_class_with_limit m, %r(xml)i,              Type::String
-          register_class_with_limit m, %r(uniqueidentifier)i, Type::Integer
-          register_class_with_limit m, %r(long binary)i,      Type::Binary
+          m.register_type %r(boolean)i,         Type::Boolean.new
+          m.alias_type    %r(tinyint)i,         'boolean'
+          m.alias_type    %r(bit)i,             'boolean'
+
+          m.register_type %r(char)i,            Type::String.new
+          m.alias_type    %r(varchar)i,         'char'
+          m.alias_type    %r(xml)i,             'char'
+
+          m.register_type %r(binary)i,          Type::Binary.new
+          m.alias_type    %r(long binary)i,     'binary'
+
+          m.register_type %r(text)i,            Type::Text.new
+          m.alias_type    %r(long varchar)i,    'text'
+
+          m.register_type %r(date)i,              Type::Date.new
+          m.register_type %r(time)i,              Type::Time.new
+          m.register_type %r(timestamp)i,         Type::DateTime.new
+          m.register_type %r(datetime)i,          Type::DateTime.new
+
+          m.register_type %r(int)i,               Type::Integer.new
+          m.alias_type    %r(smallint)i,          'int'
+          m.alias_type    %r(bigint)i,            'int'
+          m.alias_type    %r(uniqueidentifier)i,  'int'
+
+          #register_class_with_limit m, %r(tinyint)i,          Type::Boolean
+          #register_class_with_limit m, %r(bit)i,              Type::Boolean
+          #register_class_with_limit m, %r(long varchar)i,     Type::Text
+          #register_class_with_limit m, %r(varchar)i,          Type::String
+          #register_class_with_limit m, %r(timestamp)i,        Type::DateTime
+          #register_class_with_limit m, %r(smallint|bigint)i,  Type::Integer
+          #register_class_with_limit m, %r(xml)i,              Type::String
+          #register_class_with_limit m, %r(uniqueidentifier)i, Type::Integer
+          #register_class_with_limit m, %r(long binary)i,      Type::Binary
 
           super
         end
