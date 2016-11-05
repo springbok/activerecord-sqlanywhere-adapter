@@ -10,43 +10,43 @@ module ActiveRecord
           %Q("#{name}")
         end
 
-        # Handles special quoting of binary columns. Binary columns will be treated as strings inside of ActiveRecord.
-        # ActiveRecord requires that any strings it inserts into databases must escape the backslash (\).
-        # Since in the binary case, the (\x) is significant to SQL Anywhere, it cannot be escaped.
-        def quote(value, column = nil)
+        def _quote(value, column = nil)
           case value
-            when String, ActiveSupport::Multibyte::Chars
-              value_S = value.to_s
-              if column && column.type == :binary && column.class.respond_to?(:string_to_binary)
-                "'#{column.class.string_to_binary(value_S)}'"
-              else
-                 super(value, column)
-              end
-            when TrueClass
-              1
-            when FalseClass
-              0
+            when Type::Binary::Data
+              "'#{string_to_binary(value.to_s)}'"
             else
-              super(value, column)
+              super(value)
           end
         end
 
         def _type_cast(value)
           case value
-            when Type::Boolean
-              value ? 1 : 0
-            when Type::Decimal
-              value.to_s
-            when Date
-              value.to_s
-            when DateTime, Time
-              value.to_time.getutc.strftime("%Y-%m-%d %H:%M:%S")
-            when Integer
-              value.to_i
+            when Type::Binary::Data
+              string_to_binary(value.to_s)
             else
-              super
+              super(value)
           end
         end
+
+        private
+
+          # Handles the encoding of a binary object into SQL Anywhere
+          # SQL Anywhere requires that binary values be encoded as \xHH, where HH is a hexadecimal number
+          # This function encodes the binary string in this format
+          def string_to_binary(value)
+            value
+            #"\\x" + value.unpack("H*")[0].scan(/../).join("\\x")
+          end
+
+          def binary_to_string(value)
+            # This is causing issues when importing some documents including PDF docs
+            # that have \\x46 in the document, the code below is replacing this with
+            # the hex value of 46 which modifies the document content and makes it unreadable
+            # and no longer useful. I'm not exactly sure why this is needed as I don't want my
+            # binary data modified in any way
+            #value.gsub(/\\x[0-9]{2}/) { |byte| byte[2..3].hex }
+            value
+          end
 
       end
     end

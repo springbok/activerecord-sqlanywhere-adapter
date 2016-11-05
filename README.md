@@ -1,3 +1,24 @@
+Please note:
+============
+
+Just could not get binary data to work as a bind parameter even when using the correct format
+by escaping the data as per comments in quoting.rb:
+SQL Anywhere requires that binary values be encoded as \xHH, where HH is a hexadecimal number
+It ALWAYS treated the value as a string no matter what I tried. I added -zr all -zo reqlog.txt
+option to my server to log exactly what SQLA was processing. I think the reason is that the set_value
+method receives the value as a string and then sets the type as a string so SQLA then treats whatever
+we pass in as a string.
+
+To fix this problem I've had to modify a fork of sqlanywhere gem working on branch ruby22. I modified
+the code to allow me to get/set the bind param. This allowed me to override the type set by set_value
+before I bound the param to the statement, see code below. Setting the type means we pass in the binary
+data as is without encoding the value at all (see quoting.rb)
+
+The problem with this approach is that it binds this gem to a particular branch of sqlanywhere (ruby22).
+
+If anyone has a better approach please let me know.
+
+
 SQL Anywhere ActiveRecord Driver
 ================================
 
