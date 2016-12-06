@@ -193,6 +193,10 @@ module ActiveRecord
         exec_query(sql, name, binds).rows
       end
 
+      def exec_query(sql, name = 'SQL', binds = [], prepare: false)
+        execute_query(sql, name, binds, prepare)
+      end
+
       # The database execution function
       def execute(sql, name = nil) #:nodoc:
         if name == "skip_logging"
@@ -592,7 +596,7 @@ SQL
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 
-      def exec_query(sql, name = nil, binds = [], prepare=false)
+      def execute_query(sql, name = nil, binds = [], prepare=false)
         return log(sql, name, binds) { exec_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
