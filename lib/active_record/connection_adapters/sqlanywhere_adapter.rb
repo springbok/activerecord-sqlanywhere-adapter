@@ -597,7 +597,7 @@ SQL
         end
 
       def execute_query(sql, name = nil, binds = [], prepare=false)
-        return log(sql, name, binds) { exec_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
+        return log(sql, name, binds) { execute_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
 
