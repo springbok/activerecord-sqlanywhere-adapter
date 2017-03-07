@@ -26,7 +26,8 @@ module Arel
         # We don't need to use DISTINCT if there's a limit of 1
         # (avoids bug in SQLA with DISTINCT and GROUP BY)
         # Update: can no longer do this as o.limit.expr is a bindparam
-        using_distinct = false if using_distinct && o.limit #&& o.limit.expr == 1
+        # so we do it in the sqlanywhere_adaptor.rb module instead
+        #using_distinct = false if using_distinct && o.limit #&& o.limit.expr == 1
         collector << "DISTINCT " if using_distinct
         # Use TOP x for limit statements
         collector = maybe_visit(o.limit, collector)
