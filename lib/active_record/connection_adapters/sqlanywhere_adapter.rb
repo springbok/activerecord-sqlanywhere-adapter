@@ -598,22 +598,28 @@ SQL
 
       def execute_query(sql, name = nil, binds = [], prepare=false)
         return log(sql, name, binds) { execute_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
+
+        # Fix SQL if required
+        binds.each_with_index do |bind, i|
+          bind_value = type_cast(bind.value_for_database)
+          # Now that we no longer can access the limit value in the arel visitor (o.limit.expr)
+          # as it's a bindparam I can't see a better way of doing this, we need to check for limit == 1
+          # and not do a distinct select if this the case. Rails adds the primary
+          # key to the order clause in the find_nth_with_limit method but does not call the
+          # columns_for_distinct method to allow is to add it to the select clause as is required
+          # by SQLA. So here I check if limit specified and if 1 then we remove distinct from SQL string
+          if binds && bind.name.upcase == 'LIMIT' && sql.upcase.include?(' TOP ') &&
+            sql.upcase.include?(' DISTINCT ') && bind_value.to_i == 1
+            sql = sql.sub(/DISTINCT?\s*/i, '')
+          end
+        end
+
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
 
         begin
           binds.each_with_index do |bind, i|
             bind_value = type_cast(bind.value_for_database)
-            # Now that we no longer can access the limit value in the arel visitor (o.limit.expr)
-            # as it's a bindparam I can't see a better way of doing this, we need to check for limit == 1
-            # and not do a distinct select if this the case. Rails adds the primary
-            # key to the order clause in the find_nth_with_limit method but does not call the
-            # columns_for_distinct method to allow is to add it to the select clause as is required
-            # by SQLA. So here I check if limit specified and if 1 then we remove distinct from SQL string
-            if binds && bind.name.upcase == 'LIMIT' && sql.upcase.include?(' TOP ') &&
-              sql.upcase.include?(' DISTINCT ') && bind_value.to_i == 1
-              sql = sql.sub(/DISTINCT?\s*/i, '')
-            end
             result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
             sqlanywhere_error_test(sql) if result==0
             bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
@@ -642,7 +648,6 @@ SQL
             end
             result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
             sqlanywhere_error_test(sql) if result==0
-
           end
 
           if SA.instance.api.sqlany_execute(stmt) == 0
