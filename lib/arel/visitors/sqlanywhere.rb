@@ -21,7 +21,7 @@ module Arel
         collector << "SELECT "
         # Handle DISTINCT
         using_distinct = o.cores.any? { |core|
-          core.set_quantifier.class == Arel::Nodes::Distinct || core.projections.grep(/DISTINCT/)
+          core.set_quantifier.class == Arel::Nodes::Distinct
         }
         # We don't need to use DISTINCT if there's a limit of 1
         # (avoids bug in SQLA with DISTINCT and GROUP BY)
