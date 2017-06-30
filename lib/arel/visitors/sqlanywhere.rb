@@ -5,45 +5,31 @@ module Arel
 
       def visit_Arel_Nodes_SelectStatement(o, collector)
 
-        # o.limit.expr now a bindparam so we can not
-        # access it's value, unsure how to replicate this
-        # code, also not sure what it's meant to do
-        #if o.limit and o.limit.expr == 0
-        #  o = o.dup
-        #  o.limit = nil
-        #  o.cores.map! do |core|
-        #    core = core.dup
-        #    core.wheres << Arel::Nodes::False.new
-        #    core
-        #  end
-        #end
-
-        collector << "SELECT "
-        # Handle DISTINCT
-        using_distinct = o.cores.any? { |core|
-          # Check if DISTINCT used in SQL select or as Arel distinct
-          core.set_quantifier.class == Arel::Nodes::Distinct || core.projections.grep(/DISTINCT/)
-        }
-        # We don't need to use DISTINCT if there's a limit of 1
-        # (avoids bug in SQLA with DISTINCT and GROUP BY)
-        # Update: can no longer do this as o.limit.expr is a bindparam
-        # so we do it in the sqlanywhere_adaptor.rb module instead
-        #using_distinct = false if using_distinct && o.limit #&& o.limit.expr == 1
-        collector << "DISTINCT " if using_distinct
         # Use TOP x for limit statements
-        collector = maybe_visit(o.limit, collector)
+        collector_limit = ActiveRecord::ConnectionAdapters::AbstractAdapter::SQLString.new
+        collector_limit = maybe_visit(o.limit, collector_limit)
         # START AT x for offset
-        # Not sure what this code was meant to do??
-        #collector = visit(Arel::Nodes::Limit.new(2147483647), collector) if !o.limit and o.offset
-        collector = maybe_visit(o.offset, collector)
+        collector_offset = ActiveRecord::ConnectionAdapters::AbstractAdapter::SQLString.new
+        collector_offset = maybe_visit(o.offset, collector_offset)
         # Add select
         collector_select = ActiveRecord::ConnectionAdapters::AbstractAdapter::SQLString.new
         o.cores.inject(collector_select) { |c,x|
           visit_Arel_Nodes_SelectCore(x, c)
         }
+        # Check for Arel distinct
+        using_distinct = o.cores.any? { |core|
+          core.set_quantifier.class == Arel::Nodes::Distinct
+        }
+        # Check for distinct in SQL statement
+        using_distinct = !(collector_select =~ /distincts/i).blank? if !using_distinct
+        # Create SQL statement
+        collector << "SELECT "
+        collector << "DISTINCT " if using_distinct
+        collector << collector_limit.value + " "  if !collector_limit.value.blank?
+        collector << collector_offset.value + " " if !collector_offset.value.blank?
         # Remove SELECT and/or DISTINCT added by arel
         select_value = collector_select.value.sub(/^SELECT(\s+DISTINCT)?\s*/i, '')
-        collector << " " + select_value
+        collector << select_value + " "
         # ORDER BY
         collector = order_by_helper(o, collector)
         collector = maybe_visit(o.lock, collector)
