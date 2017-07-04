@@ -21,7 +21,7 @@ module Arel
           core.set_quantifier.class == Arel::Nodes::Distinct
         }
         # Check for distinct in SQL statement
-        using_distinct = !(collector_select =~ /distincts/i).blank? if !using_distinct
+        using_distinct = !(collector_select.value =~ /distinct/i).blank? if !using_distinct
         # Create SQL statement
         collector << "SELECT "
         collector << "DISTINCT " if using_distinct
