@@ -190,6 +190,8 @@ module ActiveRecord
       end
 
       def select_rows(sql, name = nil, binds = [])
+        # Check if sql param is a relation, if so convert to sql
+        sql = sql.to_sql if sql.class == ActiveRecord::Relation
         exec_query(sql, name, binds).rows
       end
 
