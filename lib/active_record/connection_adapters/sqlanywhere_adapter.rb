@@ -717,7 +717,7 @@ module ActiveRecord
           when 484 # DT_DECIMAL (also and more importantly numeric)
             BigDecimal.new(value)
           when 448,452,456,460,640  # DT_VARCHAR, DT_FIXCHAR, DT_LONGVARCHAR, DT_STRING, DT_LONGNVARCHAR
-            value.force_encoding(ActiveRecord::Base.connection_config['encoding'] || "UTF-8")
+            value.force_encoding(ActiveRecord::Base.connection_config[:encoding] || "UTF-8")
           else
             value
           end
