@@ -127,7 +127,7 @@ module ActiveRecord
       end
 
       def explain(arel, binds = [])
-        # Not implemented
+        raise NotImplementedError
       end
 
       def adapter_name #:nodoc:
@@ -199,25 +199,31 @@ module ActiveRecord
         execute_query(sql, name, binds, prepare)
       end
 
-      # The database execution function
-      def execute(sql, name = nil) #:nodoc:
-        if name == "skip_logging"
-          begin
-            stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-            sqlanywhere_error_test(sql) if stmt==nil
-            r = SA.instance.api.sqlany_execute(stmt)
-            sqlanywhere_error_test(sql) if r==0
-            @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
-            sqlanywhere_error_test(sql) if @affected_rows==-1
-          rescue StandardError => e
-            @affected_rows = 0
-            raise e
-          ensure
-            SA.instance.api.sqlany_free_stmt(stmt)
-          end
+      def execute( sql, name = nil)
+        log(sql, name) do
+          _execute sql, name
+        end
+      end
 
-        else
-          log(sql, name) { execute(sql, "skip_logging") }
+      # The database execution function
+      def _execute(sql, name = nil) #:nodoc:
+        begin
+          stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+          sqlanywhere_error_test(sql) if stmt==nil
+          r = SA.instance.api.sqlany_execute(stmt)
+          sqlanywhere_error_test(sql) if r==0
+          @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
+          sqlanywhere_error_test(sql) if @affected_rows==-1
+        rescue StandardError => e
+          @affected_rows = 0
+          SA.instance.api.sqlany_rollback @connection
+          raise e
+        ensure
+          SA.instance.api.sqlany_free_stmt(stmt)
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
         end
         @affected_rows
       end
@@ -243,9 +249,9 @@ module ActiveRecord
               super
             end
           when -194
-            raise InvalidForeignKey.new(message, exception)
+            raise ActiveRecord::InvalidForeignKey.new(message)
           when -196
-            raise RecordNotUnique.new(message, exception)
+            raise ActiveRecord::RecordNotUnique.new(message)
           when -183
             raise ArgumentError, message
           else
@@ -310,13 +316,13 @@ module ActiveRecord
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
         sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
-        exec_query(sql, 'skip_logging').map { |row| row["table_name"] }
+        exec_query(sql, 'SCHEMA').map { |row| row["table_name"] }
       end
 
       # Returns an array of view names defined in the database.
       def views(name = nil) #:nodoc:
         sql = "SELECT * FROM SYS.SYSTAB WHERE table_type_str = 'VIEW' AND creator NOT IN (0,3,5)"
-        exec_query(sql, 'skip_logging').map { |row| row["table_name"] }
+        exec_query(sql, 'SCHEMA').map { |row| row["table_name"] }
       end
 
       def columns(table_name, name = nil) #:nodoc:
@@ -465,7 +471,7 @@ module ActiveRecord
             and t.table_name = '#{table_name}'
           group by ix.index_name, ix.index_id, ix.index_category
           order by ix.index_id"
-        pks = exec_query(sql, "skip_logging").to_hash.first
+        pks = exec_query(sql, "SCHEMA").to_hash.first
         if pks['pk_columns']
           pks['pk_columns'].split(',')
         else
@@ -542,28 +548,28 @@ module ActiveRecord
 
         def table_structure(table_name)
           sql = <<-SQL
-SELECT SYS.SYSCOLUMN.column_name AS name,
-  if left("default",1)='''' then substring("default", 2, length("default")-2) // remove the surrounding quotes
-  else NULLIF(SYS.SYSCOLUMN."default", 'autoincrement')
-  endif AS "default",
-  IF SYS.SYSCOLUMN.domain_id IN (7,8,9,11,33,34,35,3,27) THEN
-    IF SYS.SYSCOLUMN.domain_id IN (3,27) THEN
-      SYS.SYSDOMAIN.domain_name || '(' || SYS.SYSCOLUMN.width || ',' || SYS.SYSCOLUMN.scale || ')'
-    ELSE
-      SYS.SYSDOMAIN.domain_name || '(' || SYS.SYSCOLUMN.width || ')'
-    ENDIF
-  ELSE
-    SYS.SYSDOMAIN.domain_name
-  ENDIF AS domain,
-  IF SYS.SYSCOLUMN.nulls = 'Y' THEN 1 ELSE 0 ENDIF AS nulls
-FROM
-  SYS.SYSCOLUMN
-  INNER JOIN SYS.SYSTABLE ON SYS.SYSCOLUMN.table_id = SYS.SYSTABLE.table_id
-  INNER JOIN SYS.SYSDOMAIN ON SYS.SYSCOLUMN.domain_id = SYS.SYSDOMAIN.domain_id
-WHERE
-  table_name = '#{table_name}'
-SQL
-          structure = exec_query(sql, "skip_logging").to_hash
+          SELECT SYS.SYSCOLUMN.column_name AS name,
+            if left("default",1)='''' then substring("default", 2, length("default")-2) // remove the surrounding quotes
+            else NULLIF(SYS.SYSCOLUMN."default", 'autoincrement')
+            endif AS "default",
+            IF SYS.SYSCOLUMN.domain_id IN (7,8,9,11,33,34,35,3,27) THEN
+              IF SYS.SYSCOLUMN.domain_id IN (3,27) THEN
+                SYS.SYSDOMAIN.domain_name || '(' || SYS.SYSCOLUMN.width || ',' || SYS.SYSCOLUMN.scale || ')'
+              ELSE
+                SYS.SYSDOMAIN.domain_name || '(' || SYS.SYSCOLUMN.width || ')'
+              ENDIF
+            ELSE
+              SYS.SYSDOMAIN.domain_name
+            ENDIF AS domain,
+            IF SYS.SYSCOLUMN.nulls = 'Y' THEN 1 ELSE 0 ENDIF AS nulls
+          FROM
+            SYS.SYSCOLUMN
+            INNER JOIN SYS.SYSTABLE ON SYS.SYSCOLUMN.table_id = SYS.SYSTABLE.table_id
+            INNER JOIN SYS.SYSDOMAIN ON SYS.SYSCOLUMN.domain_id = SYS.SYSDOMAIN.domain_id
+          WHERE
+            table_name = '#{table_name}'
+          SQL
+          structure = exec_query(sql, "SCHEMA").to_hash
 
           structure.map do |column|
             if String === column["default"]
@@ -598,9 +604,7 @@ SQL
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 
-      def execute_query(sql, name = nil, binds = [], prepare=false)
-        return log(sql, name, binds) { execute_query(sql, 'skip_logging', binds) } unless name=='skip_logging'
-
+      def exec_query sql, name = nil, binds = [], prepare = false
         # Fix SQL if required
         binds.each_with_index do |bind, i|
           bind_value = type_cast(bind.value_for_database)
@@ -615,7 +619,12 @@ SQL
             sql = sql.sub(/DISTINCT?\s*/i, '')
           end
         end
+        log(sql, name, binds, type_casted_binds(binds)) do
+          _exec_query sql, name, binds, prepare
+        end
+      end
 
+      def _exec_query(sql, name, binds, prepare)
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
 
@@ -681,16 +690,16 @@ SQL
           sqlanywhere_error_test(sql) if @affected_rows==-1
         rescue StandardError => e
           @affected_rows = 0
+          SA.instance.api.sqlany_rollback @connection
           raise e
         ensure
           SA.instance.api.sqlany_free_stmt(stmt)
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
         end
-
-        if @auto_commit
-          result = SA.instance.api.sqlany_commit(@connection)
-          sqlanywhere_error_test(sql) if result==0
-        end
-        return ActiveRecord::Result.new(fields, rows)
+        ActiveRecord::Result.new(fields, rows)
       end
 
       def exec_delete(sql, name = 'SQL', binds = [])
