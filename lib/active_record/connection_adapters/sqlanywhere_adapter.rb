@@ -189,12 +189,6 @@ module ActiveRecord
         }
       end
 
-      def select_rows(sql, name = nil, binds = [])
-        # Check if sql param is a relation, if so convert to sql
-        sql = sql.to_sql if sql.class == ActiveRecord::Relation
-        exec_query(sql, name, binds).rows
-      end
-
       def exec_query(sql, name = 'SQL', binds = [], prepare: false)
         execute_query(sql, name, binds, prepare)
       end
@@ -203,29 +197,6 @@ module ActiveRecord
         log(sql, name) do
           _execute sql, name
         end
-      end
-
-      # The database execution function
-      def _execute(sql, name = nil) #:nodoc:
-        begin
-          stmt = SA.instance.api.sqlany_prepare(@connection, sql)
-          sqlanywhere_error_test(sql) if stmt==nil
-          r = SA.instance.api.sqlany_execute(stmt)
-          sqlanywhere_error_test(sql) if r==0
-          @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
-          sqlanywhere_error_test(sql) if @affected_rows==-1
-        rescue StandardError => e
-          @affected_rows = 0
-          SA.instance.api.sqlany_rollback @connection
-          raise e
-        ensure
-          SA.instance.api.sqlany_free_stmt(stmt)
-          if @auto_commit
-            result = SA.instance.api.sqlany_commit(@connection)
-            sqlanywhere_error_test(sql) if result==0
-          end
-        end
-        @affected_rows
       end
 
       def sqlanywhere_error_test(sql = '')
@@ -604,7 +575,30 @@ module ActiveRecord
           SA.instance.api.sqlany_execute_immediate(@connection, "CREATE VARIABLE liveness INT") rescue nil
         end
 
-      def exec_query sql, name = nil, binds = [], prepare = false
+      # The database execution function
+      def _execute(sql, name = nil) #:nodoc:
+        begin
+          stmt = SA.instance.api.sqlany_prepare(@connection, sql)
+          sqlanywhere_error_test(sql) if stmt==nil
+          r = SA.instance.api.sqlany_execute(stmt)
+          sqlanywhere_error_test(sql) if r==0
+          @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
+          sqlanywhere_error_test(sql) if @affected_rows==-1
+        rescue StandardError => e
+          @affected_rows = 0
+          SA.instance.api.sqlany_rollback @connection
+          raise e
+        ensure
+          SA.instance.api.sqlany_free_stmt(stmt)
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
+        end
+        @affected_rows
+      end
+
+      def execute_query(sql, name = nil, binds = [], prepare = false)
         # Fix SQL if required
         binds.each_with_index do |bind, i|
           bind_value = type_cast(bind.value_for_database)
@@ -620,11 +614,11 @@ module ActiveRecord
           end
         end
         log(sql, name, binds, type_casted_binds(binds)) do
-          _exec_query sql, name, binds, prepare
+          _execute_query sql, name, binds, prepare
         end
       end
 
-      def _exec_query(sql, name, binds, prepare)
+      def _execute_query(sql, name, binds, prepare)
         stmt = SA.instance.api.sqlany_prepare(@connection, sql)
         sqlanywhere_error_test(sql) if stmt==nil
 
