@@ -584,16 +584,16 @@ module ActiveRecord
           sqlanywhere_error_test(sql) if r==0
           @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
           sqlanywhere_error_test(sql) if @affected_rows==-1
-        rescue StandardError => e
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
+        rescue Exception => e
           @affected_rows = 0
           SA.instance.api.sqlany_rollback @connection
           raise e
         ensure
           SA.instance.api.sqlany_free_stmt(stmt)
-          if @auto_commit
-            result = SA.instance.api.sqlany_commit(@connection)
-            sqlanywhere_error_test(sql) if result==0
-          end
         end
         @affected_rows
       end
@@ -682,16 +682,16 @@ module ActiveRecord
           end
           @affected_rows = SA.instance.api.sqlany_affected_rows(stmt)
           sqlanywhere_error_test(sql) if @affected_rows==-1
-        rescue StandardError => e
+          if @auto_commit
+            result = SA.instance.api.sqlany_commit(@connection)
+            sqlanywhere_error_test(sql) if result==0
+          end
+        rescue Exception => e
           @affected_rows = 0
           SA.instance.api.sqlany_rollback @connection
           raise e
         ensure
           SA.instance.api.sqlany_free_stmt(stmt)
-          if @auto_commit
-            result = SA.instance.api.sqlany_commit(@connection)
-            sqlanywhere_error_test(sql) if result==0
-          end
         end
         ActiveRecord::Result.new(fields, rows)
       end
