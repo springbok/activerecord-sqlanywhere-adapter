@@ -277,10 +277,10 @@ module ActiveRecord
               "long binary"
             end
           else
-            super(type, limit, precision, scale)
+            super
           end
         else
-          super(type, limit, precision, scale)
+          super
         end
       end
 
