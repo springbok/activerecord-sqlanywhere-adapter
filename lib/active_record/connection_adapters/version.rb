@@ -1,5 +1,5 @@
 module Activerecord
   module ConnectionAdapters
-    VERSION = "2.0.13"
+    VERSION = "2.0.14"
   end
 end
