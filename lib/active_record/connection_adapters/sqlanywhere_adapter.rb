@@ -250,7 +250,7 @@ module ActiveRecord
 
       # SQL Anywhere does not support sizing of integers based on the sytax INTEGER(size). Integer sizes
       # must be captured when generating the SQL and replaced with the appropriate size.
-      def type_to_sql(type, limit: nil, precision: nil, scale: nil, **) #:nodoc:
+      def type_to_sql(type, limit = nil, precision = nil, scale = nil, **) #:nodoc:
         type = type.to_sym
         if native_database_types[type]
           if type == :integer
