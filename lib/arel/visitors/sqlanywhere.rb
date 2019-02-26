@@ -32,6 +32,11 @@ module Arel
           (collector_select.value.sub(/^SELECT(\s+DISTINCT)?\s*/i, ' ')) # Remove SELECT and/or DISTINCT added by arel
         ].compact.join('')
 
+        # Common Table Expression (CTE)
+        if o.with
+          collector = visit o.with, collector
+          collector << SPACE
+        end
         collector << select_sql_without_order
         # ORDER BY
         collector = order_by_helper(o, collector)
