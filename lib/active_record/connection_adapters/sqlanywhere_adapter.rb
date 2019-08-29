@@ -307,11 +307,9 @@ module ActiveRecord
       def indexes(table_name, name = nil) #:nodoc:
         sql = "SELECT DISTINCT index_name, \"unique\" FROM SYS.SYSTABLE INNER JOIN SYS.SYSIDXCOL ON SYS.SYSTABLE.table_id = SYS.SYSIDXCOL.table_id INNER JOIN SYS.SYSIDX ON SYS.SYSTABLE.table_id = SYS.SYSIDX.table_id AND SYS.SYSIDXCOL.index_id = SYS.SYSIDX.index_id WHERE table_name = '#{table_name}' AND index_category > 2"
         exec_query(sql, name).map do |row|
-          index = IndexDefinition.new(table_name, row['index_name'])
-          index.unique = row['unique'] == 1
           sql = "SELECT column_name FROM SYS.SYSIDX INNER JOIN SYS.SYSIDXCOL ON SYS.SYSIDXCOL.table_id = SYS.SYSIDX.table_id AND SYS.SYSIDXCOL.index_id = SYS.SYSIDX.index_id INNER JOIN SYS.SYSCOLUMN ON SYS.SYSCOLUMN.table_id = SYS.SYSIDXCOL.table_id AND SYS.SYSCOLUMN.column_id = SYS.SYSIDXCOL.column_id WHERE index_name = '#{row['index_name']}'"
-          index.columns = exec_query(sql).map { |col| col['column_name'] }
-          index
+          columns = exec_query(sql).map { |col| col['column_name'] }
+          IndexDefinition.new(table_name, row['index_name'], (row['unique'] == 1), columns)
         end
       end
 
