@@ -441,7 +441,7 @@ module ActiveRecord
             and t.table_name = '#{table_name}'
           group by ix.index_name, ix.index_id, ix.index_category
           order by ix.index_id"
-        pks = exec_query(sql, "SCHEMA").to_hash.first
+        pks = exec_query(sql, "SCHEMA").to_a.first
         if pks['pk_columns']
           pks['pk_columns'].split(',')
         else
@@ -539,7 +539,7 @@ module ActiveRecord
           WHERE
             table_name = '#{table_name}'
           SQL
-          structure = exec_query(sql, "SCHEMA").to_hash
+          structure = exec_query(sql, "SCHEMA").to_a
 
           structure.map do |column|
             if String === column["default"]
@@ -608,15 +608,22 @@ module ActiveRecord
       def execute_query(sql, name = nil, binds = [], prepare = false)
         # Fix SQL if required
         binds.each_with_index do |bind, i|
-          bind_value = type_cast(bind.value_for_database)
+          if ActiveModel::Attribute === bind
+            bind_value = type_cast(bind.value_for_database)
+          else
+            bind_value = type_cast(bind)
+          end
           # Now that we no longer can access the limit value in the arel visitor (o.limit.expr)
           # as it's a bindparam I can't see a better way of doing this, we need to check for limit == 1
           # and not do a distinct select if this the case. Rails adds the primary
           # key to the order clause in the find_nth_with_limit method but does not call the
           # columns_for_distinct method to allow is to add it to the select clause as is required
           # by SQLA. So here I check if limit specified and if 1 then we remove distinct from SQL string
-          if binds && bind.name.upcase == 'LIMIT' && sql.upcase.include?(' TOP ') &&
-            sql.upcase.include?(' DISTINCT ') && bind_value.to_i == 1
+          if ActiveModel::Attribute === bind &&
+            binds && bind.name.upcase == 'LIMIT' &&
+            sql.upcase.include?(' TOP ') &&
+            sql.upcase.include?(' DISTINCT ') &&
+            bind_value.to_i == 1
             sql = sql.sub(/DISTINCT?\s*/i, '')
           end
         end
@@ -631,7 +638,11 @@ module ActiveRecord
         free_done = false
         begin
           binds.each_with_index do |bind, i|
-            bind_value = type_cast(bind.value_for_database)
+            if ActiveModel::Attribute === bind
+              bind_value = type_cast(bind.value_for_database)
+            else
+              bind_value = type_cast(bind)
+            end
             result, bind_param = SA.instance.api.sqlany_describe_bind_param(stmt, i)
             sqlanywhere_error_test(sql) if result==0
             bind_param.set_direction(1) # https://github.com/sqlanywhere/sqlanywhere/blob/master/ext/sacapi.h#L175
@@ -655,7 +666,8 @@ module ActiveRecord
             #
             # The problem with this approach is that it binds this gem to a particular branch of sqlanywhere.
             #
-            if bind.value_for_database.class == Type::Binary::Data
+            if ActiveModel::Attribute === bind &&
+              bind.value_for_database.class == Type::Binary::Data
               bind_param.set_type(1)
             end
             result = SA.instance.api.sqlany_bind_param(stmt, i, bind_param)
@@ -724,7 +736,8 @@ module ActiveRecord
           when 484 # DT_DECIMAL (also and more importantly numeric)
             BigDecimal(value)
           when 448,452,456,460,640  # DT_VARCHAR, DT_FIXCHAR, DT_LONGVARCHAR, DT_STRING, DT_LONGNVARCHAR
-            value.force_encoding(ActiveRecord::Base.connection_config[:encoding] || "UTF-8")
+            config = ActiveRecord::Base.connection_db_config.configuration_hash
+            value.force_encoding(config["encoding"] || "UTF-8")
           else
             value
           end
@@ -732,3 +745,4 @@ module ActiveRecord
     end
   end
 end
+
