@@ -505,7 +505,7 @@ module ActiveRecord
           super
         end
 
-        def select(sql, name = nil, binds = []) #:nodoc:
+        def select(sql, name = nil, binds = [], prepare=false) #:nodoc:
            exec_query(sql, name, binds)
         end
 
