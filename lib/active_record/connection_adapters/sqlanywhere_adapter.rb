@@ -211,13 +211,13 @@ module ActiveRecord
       end
 
       def translate_exception(exception, message)
-        return super unless exception.respond_to?(:errno)
+        return super exception, message: message, sql: exception.sql, binds: nil unless exception.respond_to?(:errno)
         case exception.errno
           when -143
             if exception.sql !~ /^SELECT/i then
               raise ActiveRecord::ActiveRecordError.new(message)
             else
-              super
+              super exception, message: message, sql: exception.sql, binds: nil
             end
           when -194
             raise ActiveRecord::InvalidForeignKey.new(message)
@@ -226,7 +226,7 @@ module ActiveRecord
           when -183
             raise ArgumentError, message
           else
-            super
+            super exception, message: message, sql: exception.sql, binds: nil
         end
       end
 
