@@ -36,9 +36,9 @@ end
 namespace :db do
   namespace :test do
     redefine_task :purge => :environment do |existing_actions|
-      abcs = ActiveRecord::Base.configurations
-      if abcs['test']['adapter'] == 'sqlanywhere'
-        ActiveRecord::Base.establish_connection(:test)
+      env = ActiveRecord::Base.configurations.find_db_config('test')
+      if env.adapter == 'sqlanywhere'
+        ActiveRecord::Base.establish_connection(env)
         ActiveRecord::Base.connection.purge_database
       else
         Array(existing_actions).each{|action| action.call}
@@ -48,8 +48,9 @@ namespace :db do
   
   namespace :schema do
     redefine_task :dump => :environment do |existing_actions|
-      if ActiveRecord::Base.configurations[Rails.env]['adapter'] == 'sqlanywhere'
-        ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations[Rails.env])
+      env = ActiveRecord::Base.configurations.find_db_config(Rails.env)
+      if env.adapter == 'sqlanywhere'
+        ActiveRecord::Base.establish_connection(env)
         #ActiveRecord::SchemaDumper.ignore_tables = ActiveRecord::Base.connection.viewed_tables
       end
       Array(existing_actions).each{|action| action.call}
