@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency(%q<sqlanywhere>, [">= 0.2.1"])
-  spec.add_runtime_dependency(%q<activerecord>, [">= 7.1.0"])
+  spec.add_runtime_dependency(%q<activerecord>, [">= 7.0.0"])
   spec.required_ruby_version = '>= 3.2'
 end
 
