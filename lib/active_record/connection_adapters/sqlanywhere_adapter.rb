@@ -190,6 +190,10 @@ module ActiveRecord
         }
       end
 
+      def internal_exec_query(sql, name = 'SQL', binds = [], prepare: false)
+        execute_query(sql, name, binds, prepare)
+      end
+
       def exec_query(sql, name = 'SQL', binds = [], prepare: false)
         execute_query(sql, name, binds, prepare)
       end
