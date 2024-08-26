@@ -122,6 +122,7 @@ module ActiveRecord
         super(connection, logger)
         @auto_commit = true
         @affected_rows = 0
+        @connection = connection
         @connection_string = connection_string
         connect!
       end
