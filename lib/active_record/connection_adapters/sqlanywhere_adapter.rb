@@ -256,7 +256,6 @@ module ActiveRecord
       # SQL Anywhere does not support sizing of integers based on the sytax INTEGER(size). Integer sizes
       # must be captured when generating the SQL and replaced with the appropriate size.
       def type_to_sql(type, limit: nil, precision: nil, scale: nil, **)
-      #def type_to_sql(type, limit = nil, precision = nil, scale = nil, **) #:nodoc:
         type = type.to_sym
         if native_database_types[type]
           if type == :integer
@@ -290,6 +289,20 @@ module ActiveRecord
         end
       end
 
+      def add_column_options!(sql, options)
+        sql << " DEFAULT #{quote_default_expression(options[:default], options[:column])}" if options_include_default?(options)
+        # must explicitly check for :null to allow change_column to work on migrations
+        if options[:null] == false
+          sql << " NOT NULL"
+        end
+        if options[:auto_increment] == true
+          sql << " AUTO_INCREMENT"
+        end
+        if options[:primary_key] == true
+          sql << " PRIMARY KEY"
+        end
+        sql
+      end
       # Do not return SYS-owned or DBO-owned tables or RS_systabgroup-owned
       def tables(name = nil) #:nodoc:
         sql = "SELECT table_name FROM SYS.SYSTABLE WHERE creator NOT IN (0,3,5)"
@@ -328,58 +341,48 @@ module ActiveRecord
         end
       end
 
-      def remove_index(table_name, options={}) #:nodoc:
-        exec_query "DROP INDEX #{quote_table_name(table_name)}.#{quote_column_name(index_name(table_name, options))}"
+      #def remove_index(table_name, column_name=nil, options={}) #:nodoc:
+      #  execute "DROP INDEX #{quote_table_name(table_name)}.#{quote_column_name(index_name(table_name, options))}"
+      #end
+      def remove_index(table_name, column_name = nil, **options)
+        return if options[:if_exists] && !index_exists?(table_name, column_name, **options)
+        index_name = index_name_for_remove(table_name, column_name, options)
+        execute "DROP INDEX #{quote_table_name(table_name)}.#{quote_column_name(index_name)}"
       end
 
-      def rename_table(name, new_name)
-        exec_query "ALTER TABLE #{quote_table_name(name)} RENAME #{quote_table_name(new_name)}"
-        rename_table_indexes(name, new_name)
+      def rename_table(name, new_name, **)
+        execute "ALTER TABLE #{quote_table_name(name)} RENAME #{quote_table_name(new_name)}"
       end
 
       def change_column_default(table_name, column_name, default) #:nodoc:
-        exec_query "ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} DEFAULT #{quote(default)}"
+        execute "ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} DEFAULT #{quote(default)}"
       end
 
       def change_column_null(table_name, column_name, null, default = nil)
         unless null || default.nil?
-          exec_query("UPDATE #{quote_table_name(table_name)} SET #{quote_column_name(column_name)}=#{quote(default)} WHERE #{quote_column_name(column_name)} IS NULL")
+          execute("UPDATE #{quote_table_name(table_name)} SET #{quote_column_name(column_name)}=#{quote(default)} WHERE #{quote_column_name(column_name)} IS NULL")
         end
-        exec_query("ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} #{null ? '' : 'NOT'} NULL")
+        execute("ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} #{null ? '' : 'NOT'} NULL")
       end
 
-      def change_column(table_name, column_name, type, options = {}) #:nodoc:
-        add_column_sql = "ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
+      def change_column(table_name, column_name, type, **options) #:nodoc:
+        x = type_to_sql(type, limit: options[:limit], precision: options[:precision], scale: options[:scale])
+        add_column_sql = "ALTER TABLE #{quote_table_name(table_name)} ALTER #{quote_column_name(column_name)} #{type_to_sql(type, limit: options[:limit], precision: options[:precision], scale: options[:scale])}"
         add_column_options!(add_column_sql, options)
         add_column_sql << ' NULL' if options[:null]
-        exec_query(add_column_sql)
+        execute(add_column_sql)
       end
 
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
-        if column_name.downcase == new_column_name.downcase
-          whine = "if_the_only_change_is_case_sqlanywhere_doesnt_rename_the_column"
-          rename_column table_name, column_name, "#{new_column_name}#{whine}"
-          rename_column table_name, "#{new_column_name}#{whine}", new_column_name
-        else
-          exec_query "ALTER TABLE #{quote_table_name(table_name)} RENAME #{quote_column_name(column_name)} TO #{quote_column_name(new_column_name)}"
-        end
-        rename_column_indexes(table_name, column_name, new_column_name)
+        execute "ALTER TABLE #{quote_table_name(table_name)} RENAME #{quote_column_name(column_name)} TO #{quote_column_name(new_column_name)}"
       end
 
-      def remove_column(table_name, *column_names)
-        raise ArgumentError, "missing column name(s) for remove_column" unless column_names.length>0
-        column_names = column_names.flatten
-        quoted_column_names = column_names.map {|column_name| quote_column_name(column_name) }
-        column_names.zip(quoted_column_names).each do |unquoted_column_name, column_name|
-          sql = <<-SQL
-            SELECT "index_name" FROM SYS.SYSTAB join SYS.SYSTABCOL join SYS.SYSIDXCOL join SYS.SYSIDX
-            WHERE "column_name" = '#{unquoted_column_name}' AND "table_name" = '#{table_name}'
-          SQL
-          select(sql, nil).each do |row|
-            execute "DROP INDEX \"#{table_name}\".\"#{row['index_name']}\""
-          end
-          exec_query "ALTER TABLE #{quote_table_name(table_name)} DROP #{column_name}"
+      def remove_column(table_name, column_name)
+        sql = "SELECT \"index_name\" FROM SYS.SYSTAB join SYS.SYSTABCOL join SYS.SYSIDXCOL join SYS.SYSIDX WHERE \"column_name\" = '#{column_name}' AND \"table_name\" = '#{table_name}'"
+        select(sql, nil).map do |row|
+          execute "DROP INDEX \"#{table_name}\".\"#{row['index_name']}\""
         end
+        execute "ALTER TABLE #{quote_table_name(table_name)} DROP #{quote_column_name(column_name)}"
       end
 
       def disable_referential_integrity(&block) #:nodoc:
